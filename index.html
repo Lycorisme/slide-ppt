@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentasi PKL - M. Haldi | BTIKP Kalimantan Selatan</title>
+    <meta name="description"
+        content="Presentasi Laporan Praktek Kerja Lapangan M. Haldi - Website Berita BTIKP Kalimantan Selatan">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- GLOBAL CENTER ALIGNMENT --- */
+        .slide-inner {
+            text-align: center;
+        }
+
+        /* --- LOGO ANIMATION --- */
+        .uniska-logo-container {
+            margin-bottom: 25px;
+            animation: floatLogo 6s ease-in-out infinite;
+        }
+
+        .uniska-logo {
+            height: 110px;
+            width: auto;
+            filter: drop-shadow(0 0 25px rgba(79, 142, 255, 0.4));
+        }
+
+        @keyframes floatLogo {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        /* --- 2x2 GRID FOR POINTS --- */
+        .points-grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 950px;
+            margin: 30px auto 0;
+            list-style: none;
+            /* In case ul is used */
+            padding: 0;
+        }
+
+        /* Responsive: Stack on smaller screens (though this is for PPT usually landscape) */
+        @media (max-width: 768px) {
+            .points-grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .point-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            /* STRICT CENTER ALIGNMENT */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .point-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(79, 142, 255, 0.4);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Glow effect on hover */
+        .point-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(79, 142, 255, 0.8), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .point-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(79, 142, 255, 0.2), rgba(167, 139, 250, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(79, 142, 255, 0.15);
+        }
+
+        /* Typography improvements */
+        .point-text {
+            font-size: 16px;
+            line-height: 1.7;
+            /* Better readability */
+            color: rgba(255, 255, 255, 0.85);
+            /* Proper text contrast */
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .point-text strong {
+            color: #fff;
+            font-weight: 600;
+        }
+
+        /* Specific modifications for Section Titles/Desc */
+        .sec-title {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .sec-desc {
+            text-align: center;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .sec-num {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ======= ANIMATED BACKGROUND CANVAS ======= -->
+    <canvas id="bgCanvas"></canvas>
+    <div class="bg-gradient-overlay"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+        <div class="orb orb-4"></div>
+        <div class="orb orb-5"></div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <!-- Slide Counter -->
+    <div class="slide-counter" id="slideCounter">1 / 7</div>
+
+    <!-- Navigation -->
+    <button class="nav-arrow nav-prev" id="prevBtn" onclick="prevSlide()" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M15 18l-6-6 6-6" />
+        </svg>
+    </button>
+    <button class="nav-arrow nav-next" id="nextBtn" onclick="nextSlide()" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M9 18l6-6-6-6" />
+        </svg>
+    </button>
+
+    <!-- Fullscreen Toggle -->
+    <button class="nav-control-btn fullscreen-btn" id="fsBtn" onclick="toggleFullScreen()"
+        aria-label="Toggle Fullscreen">
+        <svg id="fsIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+        </svg>
+    </button>
+
+    <!-- ===================== SLIDE 1: PERKENALAN ===================== -->
+    <section class="slide active" id="slide-1">
+        <div class="slide-inner cover-slide">
+
+            <div class="uniska-logo-container animate-in" data-delay="0">
+                <!-- LOGO PATH UPDATED TO LOCAL FILE -->
+                <img src="image/Logo%20UNISKA%20%5BBLOGUNA%5D.png" alt="Logo UNISKA" class="uniska-logo">
+            </div>
+
+            <div class="cover-top-badge animate-in" data-delay="0">
+                <div class="badge-dot"></div>
+                <span>LAPORAN PRAKTEK KERJA LAPANGAN</span>
+            </div>
+
+            <h1 class="cover-title animate-in" data-delay="1">
+                <span class="cover-title-sm">Website Berita</span>
+                <span class="cover-title-lg">BTIKP<br>Kalimantan Selatan</span>
+            </h1>
+
+            <p class="cover-subtitle animate-in" data-delay="2"
+                style="text-align: center; margin: 0 auto; max-width: 700px;">
+                Dengan Implementasi <span class="hl">Rate Limiting</span>, <span class="hl">Input Validation</span>, dan
+                <span class="hl">Activity Logging</span> untuk Melindungi Sistem dari Serangan Injeksi Konten dan Akses
+                Tidak Sah
+            </p>
+
+            <div class="cover-line animate-in" data-delay="3" style="margin: 24px auto;"></div>
+
+            <div class="cover-meta animate-in" data-delay="4" style="justify-content: center;">
+                <div class="meta-chip" style="text-align: center; align-items: center;">
+                    <span class="meta-label">Disusun oleh</span>
+                    <span class="meta-val">M. Haldi</span>
+                    <span class="meta-sub">2210010283</span>
+                </div>
+                <div class="meta-chip" style="text-align: center; align-items: center;">
+                    <span class="meta-label">Program Studi</span>
+                    <span class="meta-val">S1 Teknik Informatika</span>
+                    <span class="meta-sub">FTI — UNISKA Banjarmasin</span>
+                </div>
+                <div class="meta-chip" style="text-align: center; align-items: center;">
+                    <span class="meta-label">Dosen Pembimbing</span>
+                    <span class="meta-val">Ihsanul Fikri, S.Kom., M.Kom.</span>
+                    <span class="meta-sub">NIDN. 1107078901</span>
+                </div>
+            </div>
+
+            <div class="cover-footer animate-in" data-delay="5">
+                Universitas Islam Kalimantan Muhammad Arsyad Al Banjari &bull; 2026
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SLIDE 2: PENDAHULUAN (GRID CENTER) ===================== -->
+    <section class="slide" id="slide-2">
+        <div class="slide-inner">
+            <div class="sec-num animate-in" data-delay="0">01</div>
+            <h2 class="sec-title animate-in" data-delay="1">Pendahuluan</h2>
+            <p class="sec-desc animate-in" data-delay="1">Latar belakang mengambil topik keamanan website</p>
+
+            <div class="points-grid-container animate-in" data-delay="2">
+                <div class="point-card">
+                    <div class="card-icon-circle">📢</div>
+                    <p class="point-text">Website Berita BTIKP adalah sarana informasi utama pendidikan di Kalsel.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">🚨</div>
+                    <p class="point-text">Ditemukan banyak <strong>konten ilegal</strong> (judi online) yang tidak etis
+                        disusupkan pihak luar.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">⚠️</div>
+                    <p class="point-text">Sistem lama memiliki celah keamanan karena <strong>minimnya validasi
+                            input</strong> data.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">📉</div>
+                    <p class="point-text">Dampak negatif berupa <strong>turunnya kredibilitas</strong> instansi dan
+                        inefisiensi kerja admin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SLIDE 3: TUJUAN (GRID CENTER) ===================== -->
+    <section class="slide" id="slide-3">
+        <div class="slide-inner">
+            <div class="sec-num animate-in" data-delay="0">02</div>
+            <h2 class="sec-title animate-in" data-delay="1">Tujuan Penelitian</h2>
+            <p class="sec-desc animate-in" data-delay="1">Target utama yang ingin dicapai dalam laporan PKL ini</p>
+
+            <div class="points-grid-container animate-in" data-delay="2">
+                <div class="point-card">
+                    <div class="card-icon-circle">🎯</div>
+                    <p class="point-text">Membangun ulang website dengan framework <strong>Laravel</strong> yang lebih
+                        aman dan modern.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">🛡️</div>
+                    <p class="point-text">Implementasi <strong>Rate Limiting</strong> untuk mencegah serangan <em>Brute
+                            Force</em> pada login.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">🔍</div>
+                    <p class="point-text">Penerapan <strong>Input Validation</strong> ketat untuk menolak injeksi konten
+                        berbahaya.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">📝</div>
+                    <p class="point-text">Menambahkan <strong>Activity Logging</strong> untuk memantau semua jejak
+                        aktivitas pengguna.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SLIDE 4: MANFAAT (GRID CENTER) ===================== -->
+    <section class="slide" id="slide-4">
+        <div class="slide-inner">
+            <div class="sec-num animate-in" data-delay="0">03</div>
+            <h2 class="sec-title animate-in" data-delay="1">Manfaat Penelitian</h2>
+            <p class="sec-desc animate-in" data-delay="1">Dampak positif implementasi sistem baru</p>
+
+            <div class="points-grid-container animate-in" data-delay="2">
+                <div class="point-card">
+                    <div class="card-icon-circle">🏢</div>
+                    <p class="point-text"><strong>Bagi Instansi:</strong><br>Memulihkan citra dan kepercayaan publik
+                        terhadap website resmi.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">👨‍💻</div>
+                    <p class="point-text"><strong>Bagi Administrator:</strong><br>Efisiensi kerja meningkat, bebas dari
+                        tugas pembersihan spam manual.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">👥</div>
+                    <p class="point-text"><strong>Bagi Masyarakat:</strong><br>Akses informasi pendidikan yang nyaman,
+                        aman, dan terpercaya.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">🎓</div>
+                    <p class="point-text"><strong>Bagi Penulis:</strong><br>Penerapan langsung ilmu <em>Cyber
+                            Security</em> pada kasus nyata.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SLIDE 5: KESIMPULAN (GRID CENTER) ===================== -->
+    <section class="slide" id="slide-5">
+        <div class="slide-inner">
+            <div class="sec-num animate-in" data-delay="0">04</div>
+            <h2 class="sec-title animate-in" data-delay="1">Kesimpulan</h2>
+            <p class="sec-desc animate-in" data-delay="1">Evaluasi hasil implementasi sistem keamanan</p>
+
+            <div class="points-grid-container animate-in" data-delay="2">
+                <div class="point-card">
+                    <div class="card-icon-circle">✅</div>
+                    <p class="point-text">Sistem keamanan baru berhasil <strong>menolak input berbahaya</strong> secara
+                        otomatis.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">🔒</div>
+                    <p class="point-text">Fitur <strong>Rate Limiting</strong> efektif memblokir akses login yang
+                        mencurigakan (brute force).</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">📊</div>
+                    <p class="point-text"><strong>Activity Logging</strong> berhasil merekam jejak audit untuk
+                        transparansi sistem.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">🚀</div>
+                    <p class="point-text">Website BTIKP kini berjalan lebih <strong>aman, stabil, dan mudah
+                            dikelola</strong>.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SLIDE 6: SARAN (GRID CENTER) ===================== -->
+    <section class="slide" id="slide-6">
+        <div class="slide-inner">
+            <div class="sec-num animate-in" data-delay="0">05</div>
+            <h2 class="sec-title animate-in" data-delay="1">Saran</h2>
+            <p class="sec-desc animate-in" data-delay="1">Rekomendasi untuk pengembangan di masa depan</p>
+
+            <div class="points-grid-container animate-in" data-delay="2">
+                <div class="point-card">
+                    <div class="card-icon-circle">🔐</div>
+                    <p class="point-text">Implementasi <strong>Two-Factor Authentication (2FA)</strong> untuk memperkuat
+                        login admin.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">📅</div>
+                    <p class="point-text">Melakukan <strong>Audit Keamanan Rutin</strong> minimal setiap 6 bulan sekali.
+                    </p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">📱</div>
+                    <p class="point-text">Pengembangan aplikasi <strong>Mobile (Android/iOS)</strong> untuk jangkauan
+                        pembaca lebih luas.</p>
+                </div>
+                <div class="point-card">
+                    <div class="card-icon-circle">🔔</div>
+                    <p class="point-text">Integrasi notifikasi <strong>Real-time</strong> (WA/Email) untuk peringatan
+                        keamanan.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SLIDE 7: TERIMA KASIH (PENUTUP) ===================== -->
+    <section class="slide" id="slide-7">
+        <div class="slide-inner closing-slide">
+            <div class="closing-glow"></div>
+
+            <div class="uniska-logo-container animate-in" data-delay="0" style="margin-bottom: 30px;">
+                <!-- LOGO PATH UPDATED -->
+                <img src="image/Logo%20UNISKA%20%5BBLOGUNA%5D.png" alt="Logo UNISKA" class="uniska-logo"
+                    style="height: 100px;">
+            </div>
+
+            <h2 class="closing-title animate-in" data-delay="1">Terima Kasih</h2>
+            <p class="closing-subtitle animate-in" data-delay="2" style="text-align: center;">Atas perhatian dan
+                bimbingan yang telah diberikan</p>
+            <div class="closing-divider animate-in" data-delay="3" style="margin: 30px auto;"></div>
+            <div class="closing-meta animate-in" data-delay="4" style="text-align: center;">
+                <p class="closing-name">M. Haldi — 2210010283</p>
+                <p class="closing-detail">S1 Teknik Informatika • UNISKA Banjarmasin</p>
+                <p class="closing-detail">BTIKP Provinsi Kalimantan Selatan • 2025/2026</p>
+            </div>
+            <div class="closing-cta animate-in" data-delay="5">
+                <span class="cta-dot"></span>
+                Sesi Tanya Jawab
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
