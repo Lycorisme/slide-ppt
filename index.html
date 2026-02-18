@@ -157,6 +157,28 @@
             display: block;
         }
     </style>
+    <style>
+        /* --- SLIDE 6 CUSTOM LAYOUT (3 ITEMS CENTERED) --- */
+        #slide-6 .points-grid-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        #slide-6 .point-card {
+            /* Force 2 columns width logic with gap compensation */
+            width: calc(50% - 10px);
+            flex-grow: 0;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            #slide-6 .point-card {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -391,23 +413,18 @@
             <div class="points-grid-container animate-in" data-delay="2">
                 <div class="point-card">
                     <div class="card-icon-circle">🔐</div>
-                    <p class="point-text">Implementasi <strong>Two-Factor Authentication (2FA)</strong> untuk memperkuat
-                        login admin.</p>
+                    <p class="point-text">Penggunaan protokol <strong>HTTPS (SSL/TLS)</strong> pada server produksi
+                        untuk mengenkripsi lalu lintas data antara browser dan server.</p>
                 </div>
                 <div class="point-card">
-                    <div class="card-icon-circle">📅</div>
-                    <p class="point-text">Melakukan <strong>Audit Keamanan Rutin</strong> minimal setiap 6 bulan sekali.
-                    </p>
+                    <div class="card-icon-circle">🤖</div>
+                    <p class="point-text">Penambahan fitur <strong>CAPTCHA (Google reCAPTCHA)</strong> pada formulir
+                        login dan input publik untuk menambah lapisan keamanan terhadap bot otomatis.</p>
                 </div>
                 <div class="point-card">
-                    <div class="card-icon-circle">📱</div>
-                    <p class="point-text">Pengembangan aplikasi <strong>Mobile (Android/iOS)</strong> untuk jangkauan
-                        pembaca lebih luas.</p>
-                </div>
-                <div class="point-card">
-                    <div class="card-icon-circle">🔔</div>
-                    <p class="point-text">Integrasi notifikasi <strong>Real-time</strong> (WA/Email) untuk peringatan
-                        keamanan.</p>
+                    <div class="card-icon-circle">💾</div>
+                    <p class="point-text">Menerapkan prosedur <strong>Backup Berkala</strong> basis data secara otomatis
+                        (harian/mingguan) guna mengantisipasi risiko kehilangan data.</p>
                 </div>
             </div>
         </div>

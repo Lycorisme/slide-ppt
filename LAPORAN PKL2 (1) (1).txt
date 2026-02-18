@@ -1,0 +1,1372 @@
+LAPORAN PRAKTEK KERJA LAPANGAN
+
+WEBSITE BERITA BTIKP KALIMANTAN SELATAN DENGAN IMPLEMENTASI RATE LIMITING, INPUT VALIDATION, DAN ACTIVITY LOGGING UNTUK MELINDUNGI SISTEM DARI SERANGAN INJEKSI KONTEN DAN AKSES TIDAK SAH
+
+
+
+Disusun oleh:
+M. Haldi
+NPM: 2210010283
+
+
+
+
+
+PROGRAM STUDI S1 TEKNIK INFORMATIKA
+FAKULTAS TEKNOLOGI INFORMASI
+UNIVERSITAS ISLAM KALIMANTAN 
+BANJARMASIN
+2026
+
+LEMBAR PENGESAHAN
+WEBSITE BERITA BTIKP KALIMANTAN SELATAN DENGAN IMPLEMENTASI RATE LIMITING, INPUT VALIDATION, DAN ACTIVITY LOGGING UNTUK MELINDUNGI SISTEM DARI SERANGAN INJEKSI KONTEN DAN AKSES TIDAK SAH
+
+Laporan Praktek Kerja Lapangan ini telah disidangkan pada :
+Hari, Tanggal:Tempat:Fakultas Teknologi Informasi Universitas Islam Kalimantan Muhammad Arsyad Al Banjari Banjarmasin
+Menyetujui/Mengesahkan
+
+Banjarmasin, Januari 2026
+Ketua Program Studi,Dosen Pembimbing,Wagino, S.Kom., M.Kom.,Ihsanul Fikri, S.Kom., M.Kom.,NIDN. 1127098901NIDN. 1107078901
+Mengetahui :Dekan Fakultas Teknologi Informasi
+Universitas Islam KalimantanDr. Hj. Silvia Ratna, S.Kom., M.KomNIP. 19750913 200501 2 001
+PERNYATAAN
+      Dengan ini saya menyatakan bahwa Praktek Kerja Lapangan dengan judul “WEBSITE BERITA BTIKP KALIMANTAN SELATAN DENGAN IMPLEMENTASI RATE LIMITING, INPUT VALIDATION, DAN ACTIVITY LOGGING UNTUK MELINDUNGI SISTEM DARI SERANGAN INJEKSI KONTEN DAN AKSES TIDAK SAH” Ini beserta seluruh isinya adalah benar-benar karya saya sendiri, dan saya tidak melakukan penjiplakan atau pengutipan dengan cara-cara yang tidak sesuai dengan etika keilmuan yang berlaku dalam masyarakat keilmuan. Atas pernyataan ini, saya siap menanggung risiko / sanksi yang dijatuhkan kepada saya apabila kemudian ditemukan adanya pelanggaran terhadap etika keilmuan dalam karya saya ini, atau ada klaim dari pihak lain terhadap keaslian karya saya ini.
+      
+Banjarmasin, Januari 2026Yang membuat pernyataanM. Haldi2210010283      
+KATA PENGANTAR
+Assalamu’alaikum Warohmatullahi Wabarokatu
+      Puji syukur kehadirat Allah SWT atas segala rahmat, hidayah, dan inayah-Nya, sehingga penulis dapat menyelesaikan Laporan Praktik Kerja Lapangan (PKL) ini dengan judul “WEBSITE BERITA BTIKP KALIMANTAN SELATAN DENGAN IMPLEMENTASI RATE LIMITING, INPUT VALIDATION, DAN ACTIVITY LOGGING UNTUK MELINDUNGI SISTEM DARI SERANGAN INJEKSI KONTEN DAN AKSES TIDAK SAH” tepat pada waktunya.
+      Laporan ini disusun sebagai salah satu syarat untuk menyelesaikan mata kuliah Praktik Kerja Lapangan pada Program Studi Teknik Informatika, Fakultas Teknologi Informasi, Universitas Islam Kalimantan Muhammad Arsyad Al Banjari Banjarmasin.
+      Laporan Praktik Kerja Lapangan ini merupakan hasil dari kegiatan yang dilaksanakan di BTIKP Provinsi Kalimantan Selatan pada tanggal 01 September 2025 sampai dengan 31 Oktober 2025.
+      Dalam proses penyusunan laporan ini, penulis menyadari bahwa keberhasilan ini tidak lepas dari bantuan, bimbingan, dan dukungan berbagai pihak. Oleh karena itu, pada kesempatan ini penulis ingin menyampaikan ucapan terima kasih yang sebesar-besarnya kepada:
+1. Ibu Dr. Hj. Silvia Ratna, S.Kom., M.Kom., selaku Dekan Fakultas Teknologi Informasi Universitas Islam Kalimantan Muhammad Arsyad Al Banjari Banjarmasin.
+2. Bapak Wagino, S.Kom., M.Kom., selaku Ketua Program Studi Teknik Informatika Universitas Islam Kalimantan Muhammad Arsyad Al Banjari Banjarmasin.
+3. Bapak Ihsanul Fikri, S.Kom., M.Kom., selaku Dosen Pembimbing yang telah meluangkan waktu dan pikiran untuk memberikan bimbingan serta arahan kepada penulis selama penyusunan laporan ini.
+4. Bapak Juli Anshori, M.Kom., selaku Pembimbing Lapangan di BTIKP Provinsi Kalimantan Selatan yang telah banyak berbagi ilmu, pengalaman, dan membimbing penulis selama pelaksanaan kegiatan magang.
+      Penulis menyadari bahwa laporan ini masih jauh dari kesempurnaan. Oleh karena itu, kritik dan saran yang membangun sangat penulis harapkan demi perbaikan di masa mendatang. Semoga laporan ini dapat memberikan manfaat bagi pembaca dan pihak-pihak yang membutuhkan.
+Wassalamu’alaikum Warohmatullahi Wabarokatuh
+
+Banjarmasin, Januari 2026PenulisM. Haldi2210010283DAFTAR ISI
+LEMBAR PENGESAHAN	ii
+PERNYATAAN	iii
+KATA PENGANTAR	iv
+DAFTAR ISI	vi
+DAFTAR TABEL	viii
+DAFTAR GAMBAR	ix
+DAFTAR LAMPIRAN	xiv
+BAB I PENDAHULUAN	1
+1.1	Latar Belakang	1
+1.2	Alasan Pemilihan Judul	3
+1.3	Ruang Lingkup	4
+1.4	Tujuan dan Manfaat Praktek Kerja Lapangan	5
+1.4.1	Tujuan	5
+1.4.2	Maanfaat	6
+1.5	Sistematika Penulisan	8
+BAB II HASIL PELAKSANAAN PKL	10
+2.1	Lokasi/Tempat PKL	10
+2.1.1	Visi dan Misi	11
+2.1.2	Sturktural pada BTIKP Kalimantan Selatan	12
+2.1.3	Peta	12
+2.2	Pengumpulan Data	13
+2.2.1	Metode Wawancara	13
+2.2.2	Metode Observasi	14
+2.3	Analisis Sistem Yang Berjalan	14
+2.4	Temuan Permasalahan	15
+2.5	Solusi Pemecahan Masalah	17
+BAB III ANALISIS DAN PEMECAHAN MASALAH	20
+3.1	Usulan Sistem Baru	20
+3.1.1	Flowchart Sistem Usulan	20
+3.1.2	Usulan Hardware dan Software	22
+3.1.3	Usulan Tenaga Kerja	23
+3.2	Perancangan Model Sistem	23
+3.2.1	Use Case Diagram	24
+3.2.2	Activity Diagram	26
+3.2.3	Sequence Diagram	33
+3.2.4	Class Diagram	42
+3.3	Perancangan Database	43
+3.3.1	Rancangan Tabel	43
+3.3.2	Relasi Antar Tabel	52
+3.4	Perancangan Antarmuka Sistem	52
+3.4.1	Perancangan Antarmuka Masukan Sistem	53
+3.4.2	Perancangan Antarmuka Keluaran Sistem	89
+3.5	Hasil Tampilan Aplikasi	94
+3.5.1	Tampilan Antarmuka Masukan Sistem (input)	94
+3.5.2	Tampilan Antarmuka Keluaran Sistem (output)	144
+BAB IV PENUTUP	152
+4.1	Kesimpulan	152
+4.2	Saran	153
+DAFTAR PUSTAKA	154
+
+LAMPIRAN-LAMPIRAN	155
+1. Surat Pengantar Permohonan PKL dari Fakultas	155
+2. Surat Balasan Dari BTIKP Provinsi Kalimantan Selatan	156
+3. Daftar Hadir Praktik Kerja Lapangan	157
+4. Lembar Penilaian PKL	161
+5. Scan Kartu Bimbingan PKL	162
+6. Sertifikat	163
+DAFTAR TABEL
+Tabel 3.1 Tabel users	43
+Tabel 3.2 Tabel articles	44
+Tabel 3.3 Tabel categories	45
+Tabel 3.4 Tabel tags	45
+Tabel 3.5 Tabel article_tag	46
+Tabel 3.6 Tabel article_comments	46
+Tabel 3.7 Tabel article_likes	47
+Tabel 3.8 Tabel galleries	47
+Tabel 3.9 Tabel site_settings	48
+Tabel 3.10 Tabel activity_logs	48
+Tabel 3.11 Tabel blocked_clients	49
+Tabel 3.12 Tabel otp_codes	49
+Tabel 3.13 Tabel sessions	50
+Tabel 3.14 Tabel personal_access_tokens	50
+Tabel 3.15 Tabel cache	51
+Tabel 3.16 Tabel cache_locks	51
+Tabel 3.17 Tabel cache_locks	51
+
+
+DAFTAR GAMBAR
+Gambar 2.1 Sturktural pada BTIKP Kalimantan Selatan	12
+Gambar 2.2 Peta Lokasi BTIKP Provinsi Kalimantan Selatan	13
+Gambar 2.3 Flowchart Sistem yang Berjalan	15
+Gambar 2.4 Flowchart Solusi Pemecah Masalah	19
+Gambar 3.1 Gambar Flowchart Sistem Usulan	21
+Gambar 3.2 Use Case Diagram	24
+Gambar 3.3 Activity Diagram Sistem Login	26
+Gambar 3.4 Activity Diagram Sistem Registrasi	27
+Gambar 3.5 Activity Diagram Kelola Sistem Artikel	28
+Gambar 3.6 Activity Diagram Kelola Sistem Galeri	29
+Gambar 3.7 Activity Diagram Halaman Sistem Publik	30
+Gambar 3.8 Activity Diagram Pengaturan Sistem Website	31
+Gambar 3.9 Diagram Sequence Sistem  Autentikasi & Keamanan Akun	33
+Gambar 3.10 Diagram Sequence Sistem Pendaftaran Akun Baru	34
+Gambar 3.11 Diagram Sequence Sistem Pemulihan Kata Sandi	35
+Gambar 3.12 Diagram Sequence Sistem Konten Publik	36
+Gambar 3.13 Diagram Sequence Sistem Interaksi Pengguna	37
+Gambar 3.14 Diagram Sequence Sistem Pengelolaan Berita	38
+Gambar 3.15 Diagram Sequence Sistem Pengelolaan Galeri	38
+Gambar 3.16 Diagram Sequence Sistem Pengelolaan User	39
+Gambar 3.17 Diagram Sequence Sistem Pemantauan Keamanan Sistem	40
+Gambar 3.18 Diagram Sequence Sistem Manajemen Tong Sampah	41
+Gambar 3.19 Class Diagram	42
+Gambar 3.20 Relasi Antar Tabel	52
+Gambar 3.21 Rancangan Halaman login	53
+Gambar 3.22 Rancangan Halaman Registrasi	54
+Gambar 3.23 Rancangan Verifikasi Email Registrasi	54
+Gambar 3.24 Rancangan Pesan Email OTP Registrasi	55
+Gambar 3.25 Rancangan Halaman Reset Password	56
+Gambar 3.26 Rancangan Verifikasi Email Reset Password	57
+Gambar 3.27 Rancangan Pesan Email OTP Reset Password	58
+Gambar 3.28 Rancangan Halaman Reset Password	59
+Gambar 3.29 Rancangan antarmuka akun terkunci	60
+Gambar 3.30 Rancangan Halaman Dashboard Admin	61
+Gambar 3.31 Rancangan Halaman Dasboard Author	62
+Gambar 3.32 Rancangan Halaman Dashboard Editor	63
+Gambar 3.33 Rancangan Halaman Kelola Berita	64
+Gambar 3.34 Rancangan Modal Tambah Kelola Berita	65
+Gambar 3.35 Rancangan Modal Edit Kelola Berita	65
+Gambar 3.36 Rancangan Modal Lihat Detail Berita	66
+Gambar 3.37 Rancangan Modal Statistik	67
+Gambar 3.38 Rancangan Halaman  Kategori	68
+Gambar 3.39 Rancangan Modal Tambah Kategori	68
+Gambar 3.40 Rancangan Modal Edit Kategori	69
+Gambar 3.41 Rancangan Modal Detail Kategori	69
+Gambar 3.42 Rancangan Halaman Tag	70
+Gambar 3.43 Rancangan Modal Tambah Tag	70
+Gambar 3.44 Rancangan Modal Edit Tag	71
+Gambar 3.45 Rancangan Modal Lihat Detail Tag	72
+Gambar 3.46 Rancangan Halaman Galeri Kegiatan	73
+Gambar 3.47 Rancangan Modal Tambah Galeri	73
+Gambar 3.48 Rancangan Modal Edit Galeri	74
+Gambar 3.49 Rancangan Modal Detail Gambar	74
+Gambar 3.50 Rancangan Halaman Log Aktifitas	75
+Gambar 3.51 Rancangan Modal Detail Log Aktifitas	75
+Gambar 3.52 Rancangan Halaman Blokir Ips	76
+Gambar 3.53 Rancangan Modal Tambah Blokir Ips	76
+Gambar 3.54 Rancangan Modal Edit Blokir Ips	77
+Gambar 3.55 Rancangan Modal Detail Blokir Ips	77
+Gambar 3.56 Rancangan Halaman Laporan	78
+Gambar 3.57 Rancangan Halaman Pengaturan	78
+Gambar 3.58 Rancangan Halaman Management User	79
+Gambar 3.59 Rancangan Modal Tambah User	79
+Gambar 3.60 Rancangan Modal Edit User	80
+Gambar 3.61 Rancangan Modal Lihat Detail User	80
+Gambar 3.62 Rancangan Halaman Tong Sampah	81
+Gambar 3.63 Rancangan Halaman Profile	82
+Gambar 3.64 Rancangan Halaman Modal Notifikasi	83
+Gambar 3.65 Rancangan Halaman Beranda Publik	84
+Gambar 3.66 Rancangan Halaman Semua Berita Publik	85
+Gambar 3.67 Rancangan Halaman Detail Berita Publik	86
+Gambar 3.68 Rancangan Halaman Galeri Publik	87
+Gambar 3.69 Rancangan Halaman Pusat Akun	88
+Gambar 3.70 Rancangan Laporan Berita	89
+Gambar 3.71 Laporan Kategori	90
+Gambar 3.72 Laporan Pengguna	91
+Gambar 3.73 Rancangan Laporan Log Aktifitas	92
+Gambar 3.74 Rancangan Laporan Ip Terblokir	93
+Gambar 3.75 Rancangan Laporan Galeri	94
+Gambar 3.76 Tampilan Halaman Login	95
+Gambar 3.77 Tampilan Halaman Registrasi	96
+Gambar 3.78 Tampilan Halaman Verifikasi Email Registrasi	97
+Gambar 3.79 Tampilan Pesan Email OTP Registrasi	98
+Gambar 3.80 Tampilan Halaman Verifikasi Email Reset Password	99
+Gambar 3.81 Tampilan Verifikasi OTP Reset Password	100
+Gambar 3.82  Tampilan Pesan Email OTP Reset Password	101
+Gambar 3.83 Tampilan Halaman Reset Password	102
+ Gambar 3.84 Tampilan antarmuka akun terkunci	103
+Gambar 3.85 Tampilan Halaman Dashboard Admin	104
+Gambar 3.86 Tampilan Halaman Dashboard Author	105
+Gambar 3.87 Tampilan Halaman Dashboard Editor	106
+Gambar 3.88 Tampilan Halaman Kelola Berita	107
+Gambar 3.89 Tampilan Modal Tambah Kelola Berita	108
+Gambar 3.90 Tampilan Modal Edit Kelola Berita	109
+Gambar 3.91 Tampilan Modal Lihat Detail Berita	110
+Gambar 3.92 Tampilan Modal Statistik	111
+Gambar 3.93 Tampilan Halaman  Kategori	112
+Gambar 3.94 Tampilan Modal Tambah Kategori	113
+Gambar 3.95 Tampilan Modal Edit Kategori	114
+Gambar 3.96 Tampilan Modal Detail Kategori	115
+Gambar 3.97 Tampilan Halaman Tag	116
+Gambar 3.98 Tampilan Modal Tambah Tag	117
+Gambar 3.99 Tampilan Modal Edit Tag	118
+Gambar 3.100 Tampilan Modal Lihat Detail Tag	119
+Gambar 3.101 Tampilan Halaman Galeri Kegiatan	120
+Gambar 3.102 Tampilan Modal Tambah Galeri	121
+Gambar 3.103 Tampilan Modal Edit Galeri	122
+Gambar 3.104 Tampilan Modal Detail Gambar	123
+Gambar 3.105 Tampilan Halaman Log Aktifitas	124
+Gambar 3.106 Tampilan Modal Detail Log Aktifitas	125
+Gambar 3.107 Tampilan Halaman Blokir Ips	126
+Gambar 3.108 Tampilan Modal Tambah Blokir Ips	127
+Gambar 3.109 Tampilan Modal Edit Blokir Ips	128
+Gambar 3.110 Tampilan Modal Detail Blokir Ips	129
+Gambar 3.111 Tampilan Halaman Laporan	130
+Gambar 3.112 Tampilan Halaman Pengaturan	131
+Gambar 3.113 Tampilan Halaman Management User	132
+Gambar 3.114 Tampilan Modal Tambah User	133
+Gambar 3.115 Tampilan Modal Edit User	134
+Gambar 3.116 Tampilan Modal Lihat Detail User	135
+Gambar 3.117 Tampilan Halaman Tong Sampah	136
+Gambar 3.118 Tampilan Halaman Profile	137
+Gambar 3.119 Tampilan Modal Notifikasi	138
+Gambar 3.120 Tampilan Halaman Beranda Publik	139
+Gambar 3.121 Tampilan Halaman Semua Berita Publik	140
+Gambar 3.122 Tampilan Halaman Detail Berita Publik	141
+Gambar 3.123 Tampilan Halaman Galeri Publik	142
+Gambar 3.124 Tampilan Halaman Pusat Akun	143
+Gambar 3.125 Tampilan Laporan Berita	145
+Gambar 3.126 Tampilan Laporan Kategori	146
+Gambar 3.127 Tampilan Laporan Pengguna	147
+Gambar 3.128 Tampilan Laporan Log Aktifitas	148
+Gambar 3.129 Tampilan Laporan Ip Terblokir	149
+Gambar 3.130 Tampilan Laporan Galeri	150
+
+DAFTAR LAMPIRAN
+1. Surat Pengantar Permohonan PKL dari Fakultas	155
+2. Surat Balasan Dari BTIKP Provinsi Kalimantan Selatan	156
+3. Daftar Hadir Praktik Kerja Lapangan	157
+4. Lembar Penilaian PKL	161
+5. Scan Kartu Bimbingan PKL	162
+6. Sertifikat	163
+
+
+    BAB I 
+    BAB I 
+PENDAHULUAN
+1.1 Latar Belakang
+   Balai Teknologi Informasi dan Komunikasi Pendidikan (BTIKP) Provinsi Kalimantan Selatan adalah Unit Pelaksana Teknis Daerah (UPTD) yang beroperasi di bawah naungan Dinas Pendidikan dan Kebudayaan Provinsi Kalimantan Selatan. Instansi ini memiliki peranan strategis sebagai pusat pengembangan dan pendayagunaan Teknologi Informasi dan Komunikasi (TIK) guna mendukung peningkatan mutu pendidikan di wilayah Kalimantan Selatan. Sebagai instansi yang tidak memiliki kantor cabang fisik di tingkat kabupaten/kota, BTIKP bertugas menyediakan infrastruktur informasi yang terintegrasi untuk menjangkau ribuan sekolah dan tenaga pendidik yang tersebar di seluruh provinsi, menjadikan layanan digital sebagai instrumen vital dalam operasionalnya.
+   Unit kerja yang menjadi fokus pengamatan dalam kegiatan ini adalah tim teknis dan administrasi yang bertanggung jawab mengelola arus informasi publik dan infrastruktur jaringan. Unit ini memiliki tugas pokok dan fungsi (tupoksi) untuk memastikan kelancaran diseminasi informasi pendidikan, fasilitasi layanan digital, serta menjaga stabilitas ekosistem layanan berbasis web agar dapat diakses oleh masyarakat luas tanpa gangguan. Kinerja unit ini sangat bergantung pada ketersediaan sistem yang handal untuk mendukung pelayanan publik yang bersifat real-time dan masif.
+   
+   Dalam menjalankan operasional pengelolaan informasi publik, metode yang digunakan saat ini mengandalkan sebuah portal web existing (sistem lama) sebagai media utama penyampaian berita dan profil instansi. Pengelolaan konten dilakukan oleh administrator melalui dashboard manajemen konten standar untuk mempublikasikan berita, agenda, dan galeri kegiatan. Alur kerja yang berjalan menuntut administrator untuk memantau dan memperbarui informasi secara berkala guna memastikan masyarakat mendapatkan informasi terkini mengenai kegiatan pendidikan di Kalimantan Selatan.
+   Namun, metode pengelolaan sistem yang berjalan saat ini menghadapi sejumlah permasalahan serius terkait keamanan dan efisiensi. Permasalahan paling signifikan adalah kerentanan sistem terhadap injeksi konten ilegal, seperti iklan judi online, yang memaksa administrator melakukan pembersihan manual berulang kali sehingga kinerja menjadi tidak efektif dan efisien. Hal ini sejalan dengan urgensi evaluasi keamanan informasi di era transformasi digital, di mana insiden kebocoran data dan kerentanan sistem masih sering terjadi pada instansi yang menggunakan teknologi informasi (Jelita, Al Azam, & Nugroho, 2024). Selain itu, sistem lama belum memiliki mekanisme pembatasan akses otomatis sehingga rentan terhadap serangan Brute Force yang mencoba menebak kredensial secara paksa (Hamza & Al-Janabi, 2024; Singh et al., 2024). Celah keamanan pada validasi input juga meningkatkan risiko serangan SQL Injection, di mana penyerang dapat memanipulasi basis data melalui celah masukan yang tidak disaring (Abdullayev & Chauhan, 2023; Demilie & Deriba, 2022). Ditambah lagi, ketiadaan fitur pencatatan aktivitas (Activity Logging) menyebabkan sulitnya melakukan audit forensik dan penelusuran jejak digital ketika terjadi insiden keamanan (Ali, Ahmed, & Khan, 2021). sehingga integritas data sulit dipertanggungjawabkan.
+   Untuk itu, dalam penelitian ini akan dibangun suatu pengembangan sistem dengan mengambil studi kasus pada BTIKP Provinsi Kalimantan Selatan dengan judul penelitian "WEBSITE BERITA BTIKP KALIMANTAN SELATAN DENGAN IMPLEMENTASI RATE LIMITING, INPUT VALIDATION, DAN ACTIVITY LOGGING UNTUK MELINDUNGI SISTEM DARI SERANGAN INJEKSI KONTEN DAN AKSES TIDAK SAH". Aplikasi ini dirancang untuk mengatasi inefisiensi pengelolaan manual dan menutup celah keamanan yang ada melalui pendekatan arsitektur pertahanan berlapis.
+1.2 Alasan Pemilihan Judul
+   Pemilihan judul "WEBSITE BERITA BTIKP KALIMANTAN SELATAN DENGAN IMPLEMENTASI RATE LIMITING, INPUT VALIDATION, DAN ACTIVITY LOGGING UNTUK MELINDUNGI SISTEM DARI SERANGAN INJEKSI KONTEN DAN AKSES TIDAK SAH" didasari oleh beberapa alasan fundamental:
+1. Judul ini menempatkan keamanan sebagai prioritas tertinggi. Hal ini merupakan respons terhadap kerentanan domain pemerintah (".go.id") yang sering menjadi target serangan defacement dan penyisipan konten ilegal (judi online). Oleh karena itu, sistem tidak hanya dibangun untuk "berjalan", tetapi dibangun untuk "bertahan"
+2. Ketiga fitur keamanan yang diangkat (Rate Limiting, Input Validation, Activity Logging) dipilih karena membentuk ekosistem pertahanan yang saling melengkapi
+3. Penggunaan framework Laravel dalam website ini bertujuan untuk menerapkan standar keamanan industri yang teruji, Laravel menyediakan fitur keamanan bawaan yang handal, seperti Eloquent ORM untuk menangani SQL Injection secara otomatis, mekanisme Middleware untuk pengaturan Rate Limiting, serta perlindungan terhadap CSRF (Cross-Site Request Forgery).
+4. keamanan yang berulang pada sistem lama memaksa administrator melakukan pembersihan manual yang menyita waktu. Dengan diimplementasikannya validasi dan pembatasan akses secara sistematis, beban kerja administrator dalam menangani spam dan serangan siber dapat diminimalisir secara signifikan.
+1.3 Ruang Lingkup
+    Untuk mempermudah penulisan laporan ini sesuai ruang lingkup, maka berdasarkan permasalah dari pelaksanaan praktek kerja lapangan (PKL) pada BTIKP Kalimantan Selatan antara lain:
+1. Aspek keamanan difokuskan pada tiga fitur utama:
+* Rate Limiting: Membatasi jumlah permintaan dari satu alamat IP untuk mencegah serangan brute force.
+* Input Validation: Memvalidasi dan menyaring setiap data masukan untuk mencegah serangan injeksi seperti SQL Injection dan Cross-Site Scripting (XSS).
+* Activity Logging: Mencatat setiap aktivitas pengelolaan data (CRUD) untuk keperluan audit dan deteksi dini ancaman.
+2. Hak akses pengguna dibagi menjadi dua tingkat:
+* Administrator: Memiliki hak akses penuh untuk mengelola konten, mengatur pengguna, dan memantau log aktivitas sistem.
+* Pengunjung Umum: Dapat mengakses informasi publik (berita, profil, galeri) tanpa perlu melakukan login atau registrasi.
+3. Teknologi yang digunakan dalam pengembangan sistem:
+* Bahasa pemrograman: PHP 8.2
+* Framework: Laravel 12
+* Basis data: MySQL 8.0
+* Lingkungan pengembangan: Laragon 
+* Antarmuka: HTML, CSS, JavaScript
+1.4 Tujuan dan Manfaat Praktek Kerja Lapangan
+    Dalam pelaksanaan Praktek Kerja Lapangan ini, terdapat sejumlah tujuan yang ingin dicapai serta manfaat yang diharapkan, baik bagi instansi, mahasiswa, maupun pihak akademik.
+1.4.1 Tujuan
+    Adapun tujuan dari pelaksanaan kegiatan ini adalah sebagai berikut:
+1. Merancang dan membangun sistem informasi berupa Portal Web pada BTIKP Provinsi Kalimantan Selatan sebagai media penyebaran informasi publik yang dinamis dan terstruktur.
+2. Mengimplementasikan algoritma Rate Limiting pada sistem guna membatasi jumlah permintaan akses (request) dari pengguna dalam kurun waktu tertentu, sebagai upaya pencegahan terhadap serangan brute force.
+3. Menerapkan mekanisme Input Validation untuk menyaring data masukan guna mencegah serangan injeksi konten (seperti iklan judi online) serta fitur Activity Logging untuk mencatat rekam jejak aktivitas pengguna (audit trail) demi mempermudah pemantauan keamanan sistem.
+4. Memenuhi salah satu persyaratan kurikulum akademik wajib pada Program Studi Teknik Informatika Fakultas Teknologi Informasi Universitas Islam Kalimantan (UNISKA) Muhammad Arsyad Al Banjari Banjarmasin.
+1.4.2 Maanfaat
+    Adapun manfaat yang diharapkan dari pelaksanaan Praktek Kerja Lapangan dan pembangunan sistem ini adalah:
+1. Bagi Instansi (BTIKP Provinsi Kalimantan Selatan)
+* Meningkatkan keamanan portal web instansi dari serangan siber, khususnya injeksi konten ilegal (seperti iklan judi online) yang dapat merusak citra kelembagaan.
+* Meningkatkan efisiensi kerja admin dalam mengelola konten karena berkurangnya gangguan spam dan serangan otomatis berkat fitur Rate Limiting.
+* Menyediakan mekanisme pengawasan sistem yang transparan melalui fitur Activity Logging, sehingga setiap perubahan data dapat diaudit dengan jelas.
+2. Bagi Mahasiswa
+* Dapat mengimplementasikan teori pemrograman web dan keamanan sistem (Web Security) yang telah dipelajari di bangku perkuliahan ke dalam kasus nyata di dunia kerja.
+* Meningkatkan kemampuan dalam menggunakan framework modern (Laravel) dan mengimplementasikan fitur keamanannya
+
+3. Bagi Akademik (Fakultas Teknologi Informasi)
+* Menambah referensi baru di perpustakaan kampus, khususnya terkait topik implementasi keamanan web (Rate Limiting dan Input Validation) pada instansi pemerintahan.
+* Mempererat hubungan kerjasama antara Universitas Islam Kalimantan (UNISKA) dengan BTIKP Provinsi Kalimantan Selatan.
+1.5 Sistematika Penulisan
+    Untuk mempermudah pemahaman dalam penyusunan laporan Praktek Kerja Lapangan ini, sistematika penulisan disusun sebagai berikut:
+BAB I 	: PENDAHULUAN
+Bab ini menguraikan tentang latar belakang masalah, alasan pemilihan judul, ruang lingkup batasan masalah, tujuan dan manfaat kegiatan PKL, serta sistematika penulisan laporan.
+BAB II 	: HASIL PELAKSANAAN PKL
+Bab ini menguraikan gambaran umum mengenai instansi tempat pelaksanaan Praktik Kerja Lapangan, visi dan misi, struktur organisasi, serta tugas pokok dan fungsi (Tupoksi) yang berjalan pada BTIKP Provinsi Kalimantan Selatan. Selain itu, bab ini juga menjelaskan tinjauan pustaka dan landasan teori yang menjadi dasar dalam penyelesaian masalah.
+BAB III 	: ANALISIS DAN PEMECAHAN MASALAH
+Bab ini membahas inti dari penelitian yang dilakukan, dimulai dari analisis terhadap sistem dan prosedur yang sedang berjalan, identifikasi permasalahan keamanan yang ditemukan, serta usulan pemecahan masalah. Pembahasan dilanjutkan dengan perancangan sistem baru, dan antarmuka, diterapkan pada aplikasi.
+BAB IV 	: PENUTUP
+Bab ini merupakan bagian akhir yang berisi kesimpulan dari seluruh rangkaian kegiatan dan hasil sistem yang dibangun, serta saran-saran yang diharapkan dapat berguna untuk pengembangan sistem di masa mendatang.
+    BAB II 
+HASIL PELAKSANAAN PKL
+BAB II 
+2.1 Lokasi/Tempat PKL
+    Kegiatan Praktek Kerja Lapangan (PKL) ini dilaksanakan pada instansi pemerintah daerah yang bergerak di bidang layanan teknologi pendidikan, yaitu Balai Teknologi Informasi dan Komunikasi Pendidikan (BTIKP) Provinsi Kalimantan Selatan. Pemilihan lokasi ini didasarkan pada kesesuaian antara kurikulum program studi Teknik Informatika dengan implementasi teknologi sistem informasi yang diterapkan pada instansi tersebut. Adapun rincian waktu dan tempat pelaksanaan kegiatan PKL adalah sebagai berikut:
+a.Nama Instansi:Balai Teknologi Informasi dan Komunikasi Pendidikan (BTIKP) Provinsi Kalimantan Selatanb.Alamat:Jl. Perdagangan, Komp. Bumi Indah Lestari II, Kuin Utara, Kec. Banjarmasin Utara, Kota Banjarmasin, Kalimantan Selatan 70124.c.Kecamatan:Banjarmasin Utarad.Kabupaten:Kota Banjarmasine.Provinsi:Kalimantan Selatanf.Status:Unit Pelaksana Teknis Daerah (UPTD) Dinas Pendidikan dan Kebudayaan Prov. Kalsel    
+    Waktu Pelaksanaan Kegiatan PKL dilaksanakan selama 2 (dua) bulan, terhitung mulai tanggal 1 September 2025 sampai dengan 31 Oktober 2025
+2.1.1 Visi dan Misi
+    BTIKP Provinsi Kalimantan Selatan memiliki visi dan misi dalam melaksanakan seluruh tugas dan tanggung jawab yang dibebankan. Adapun Visi dari BTIKP Provinsi Kalimantan Selatan adalah dalam menjalankan tugas dan fungsinya sebagai Unit Pelaksana Teknis Daerah, BTIKP dilandasi oleh visi Dinas Pendidikan dan Kebudayaan Provinsi Kalimantan Selatan yang sejalan dengan visi Gubernur Kalimantan Selatan, yaitu “KALSEL MAJU (Kalimantan Selatan Makmur, Sejahtera dan Berkelanjutan) sebagai Gerbang Ibukota Negara”.
+    Sedangkan Misi dari BTIKP Provinsi Kalimantan Selatan dalam menjalankan tugas dan wewenangnya yaitu mendukung terwujudnya Misi Pertama Pemerintah Provinsi Kalimantan Selatan: “Membangun Sumber Daya Manusia yang Berkualitas dan Berbudi Pekerti Luhur”, yang dijabarkan ke dalam tugas teknis sebagai berikut:
+1. Meningkatkan kualitas kompetensi tenaga pendidik dalam pemanfaatan teknologi informasi.
+2. Memberikan pelayanan infrastruktur dan ekosistem digital pendidikan yang terintegrasi.
+3. Mewujudkan tata kelola layanan informasi pendidikan yang transparan dan akuntabel.
+4. Mengembangkan inovasi pembelajaran berbasis digital untuk seluruh jenjang pendidikan.
+2.1.2 Sturktural pada BTIKP Kalimantan Selatan
+    BTIKP Kalimantan Selatan memiliki struktur organisasi yang terdiri dari berbagai posisi. Struktur organisasi BTIKP Kalimantan Selatan adalah sebagai berikut:
+	
+    Gambar 2.1 Sturktural pada BTIKP Kalimantan Selatan
+2.1.3 Peta
+    Balai Teknologi Informasi dan Komunikasi Pendidikan (BTIKP) Provinsi Kalimantan Selatan berlokasi di wilayah Banjarmasin Utara. Secara administratif, kantor BTIKP beralamat di Jalan Perdagangan, Komplek Bumi Indah Lestari II, Kelurahan Kuin Utara, Kecamatan Banjarmasin Utara, Kota Banjarmasin, Kalimantan Selatan 70124. Berikut adalah peta lokasi BTIKP Provinsi Kalimantan Selatan yang diambil melalui citra satelit Google Maps:
+	
+Gambar 2.2 Peta Lokasi BTIKP Provinsi Kalimantan Selatan
+2.2 Pengumpulan Data
+    Untuk mendapatkan informasi yang akurat dan relevan dalam penyusunan laporan Praktek Kerja Laparang ini, Metode pengumpulan data yang dilakukan adalah yaitu:
+2.2.1 Metode Wawancara
+    Yaitu metode pengumpulan data yang dilakukan secara bertatap muka dan tanya jawab langsung dengan pihak yang terkait. Melakukan wawancara dengan pembimbing lapangan dan staf teknis BTIKP Provinsi Kalimantan Selatan guna mengetahui kebutuhan sistem serta kendala keamanan (seperti injeksi konten) yang terjadi pada web berita sebelumnya.
+2.2.2 Metode Observasi
+    Yang kedua Yaitu metode pengumpulan data dengan cara mengamati secara langsung objek penelitian di lokasi magang. melakukan pengamatan terhadap infrastruktur jaringan yang tersedia serta menganalisis alur pengelolaan konten pada sistem yang sedang berjalan untuk mengidentifikasi celah keamanan dan kebutuhan fitur yang diperlukan.
+2.3 Analisis Sistem Yang Berjalan
+    Berdasarkan hasil pengamatan dan wawancara dengan pihak pengelola BTIKP Provinsi Kalimantan Selatan, prosedur pengelolaan informasi pada web beritayang sedang berjalan saat ini masih memiliki beberapa kelemahan mendasar, terutama dari aspek keamanan data dan pemantauan aktivitas.
+    Secara ringkas, alur sistem yang lama dimulai dari administrator melakukan login, masuk ke dashboard, menginputkan konten, hingga konten tersimpan di database dan tampil ke publik. Namun, tidak ada filter keamanan di setiap tahapannya.
+    
+Gambar 2.3 Flowchart Sistem yang Berjalan
+2.4 Temuan Permasalahan
+    Berdasarkan analisis terhadap prosedur dan sistem yang sedang berjalan di BTIKP Provinsi Kalimantan Selatan, penulis mengidentifikasi beberapa permasalahan krusial yang perlu segera ditangani. Permasalahan-permasalahan tersebut dapat diuraikan sebagai berikut:
+1. Rentannya Keamanan Data terhadap Serangan Injeksi (Injection Attacks)
+Permasalahan utama yang sering terjadi adalah munculnya konten ilegal, seperti iklan judi online, pada halaman publik. Hal ini disebabkan oleh tidak adanya mekanisme validasi input (Input Validation) pada formulir pengelolaan konten. Sistem menerima semua karakter yang dimasukkan tanpa penyaringan, sehingga skrip berbahaya (malicious script) dapat disisipkan ke dalam basis data.
+2. Risiko Tinggi Terhadap Serangan Brute Force
+Halaman login administrator pada sistem lama tidak memiliki fitur pembatasan jumlah permintaan (Rate Limiting). Kondisi ini memungkinkan pihak luar untuk melakukan percobaan login secara berulang-ulang tanpa henti menggunakan alat bantu otomatis (bot), yang meningkatkan risiko keberhasilan peretasan akun administrator.
+3. Ketiadaan Rekam Jejak Aktivitas (Audit Trail)
+Sistem yang berjalan saat ini tidak memiliki fitur pencatatan aktivitas (Activity Logging). Administrator tidak dapat mengetahui riwayat perubahan data, siapa yang melakukan login terakhir, atau dari alamat IP mana akses dilakukan. Hal ini menyulitkan proses investigasi dan pemulihan data apabila terjadi insiden keamanan atau kesalahan operasional.
+
+
+4. Efisiensi Pengelolaan yang Terganggu
+Akibat seringnya terjadi gangguan keamanan (seperti masuknya konten spam), administrator terpaksa menghabiskan waktu kerja untuk melakukan pembersihan data secara manual. Hal ini mengurangi produktivitas tim teknis yang seharusnya dapat fokus pada pengembangan layanan digital lainnya.
+2.5 Solusi Pemecahan Masalah
+    Berdasarkan analisis kelemahan dan temuan permasalahan yang telah dipaparkan sebelumnya, penulis mengusulkan solusi berupa perancangan dan pembangunan ulang Web Berita BTIKP Provinsi Kalimantan Selatan.
+    Sistem usulan ini tidak hanya berfokus pada penyajian informasi, tetapi menitikberatkan pada implementasi arsitektur keamanan berlapis. Adapun rincian solusi yang ditawarkan adalah sebagai berikut:
+1. Implementasi Rate Limiting pada Halaman Login
+Untuk mencegah serangan Brute Force, sistem usulan akan dilengkapi dengan algoritma Rate Limiting. Mekanisme ini akan menghitung jumlah kegagalan login dari satu alamat IP dalam kurun waktu tertentu. Jika batas toleransi terlampaui (misalnya 5 kali gagal dalam 1 menit), sistem akan memblokir akses dari IP tersebut sementara waktu.
+2. Penerapan Input Validation
+Untuk menanggulangi risiko serangan injeksi (SQL Injection dan XSS) yang menyebabkan munculnya konten ilegal, seluruh formulir input data akan divalidasi secara ketat. Sistem akan menolak karakter-karakter berbahaya dan membersihkan (sanitize) data sebelum disimpan ke dalam database, memastikan hanya konten yang aman yang dapat dipublikasikan.
+3. Pembuatan Fitur Activity Logging
+Sistem usulan akan dilengkapi dengan tabel khusus untuk mencatat setiap aktivitas (CRUD) yang dilakukan oleh pengguna. Data yang dicatat meliputi nama pengguna, jenis aktivitas, waktu kejadian, dan alamat IP. Fitur ini berfungsi sebagai jejak audit (audit trail) untuk memantau keamanan dan akuntabilitas sistem.
+
+Gambar 2.4 Flowchart Solusi Pemecah Masalah
+
+    BAB I 
+    BAB III 
+ANALISIS DAN PEMECAHAN MASALAH
+BAB III 
+3.1 Usulan Sistem Baru
+    Sistem yang diusulkan dalam penelitian ini adalah Website Informasi Publik BTIKP Provinsi Kalimantan Selatan yang dibangun dengan pendekatan keamanan Security-by-Design. Berbeda dengan sistem sebelumnya yang hanya berfokus pada penyampaian informasi, sistem baru ini menempatkan keamanan data sebagai prioritas utama dalam arsitekturnya.
+    Pengembangan sistem ini bertujuan untuk menutup celah kerentanan yang ada pada sistem lama melalui implementasi tiga fitur keamanan terintegrasi: Rate Limiting untuk mencegah serangan Brute Force, Input Validation untuk menangkis injeksi konten berbahaya (SQL Injection dan XSS), serta Activity Logging untuk menjamin akuntabilitas dan transparansi pengelolaan data.
+    Sistem ini dirancang berbasis web menggunakan bahasa pemrograman PHP dan basis data MySQL, yang memungkinkan aksesibilitas tinggi bagi masyarakat sekaligus memberikan kontrol penuh kepada administrator instansi dalam mengelola konten secara aman.
+3.1.1 Flowchart Sistem Usulan
+    Alur kerja sistem usulan dirancang dengan mekanisme validasi bertingkat. Setiap permintaan akses (request) yang masuk ke server tidak 
+langsung diproses, melainkan harus melewati serangkaian pemeriksaan keamanan. 
+
+Gambar 3.1 Gambar Flowchart Sistem Usulan
+      Berikut adalah uraian alur logika sistem usulan:
+1. Sebelum halaman login ditampilkan, sistem memeriksa alamat IP pengguna. Jika terdeteksi melakukan percobaan login gagal yang berlebihan, akses akan diblokir sementara oleh fitur Rate Limiting.
+2. Saat administrator menginput data (berita/profil), sistem melakukan Input Validation dan Sanitization untuk membuang karakter berbahaya.
+3. Data yang valid disimpan ke basis data, dan sistem secara otomatis mencatat detail aktivitas tersebut (Siapa, Apa, Kapan, IP) ke dalam tabel log (Activity Logging).
+3.1.2 Usulan Hardware dan Software
+    Agar sistem dapat beroperasi secara optimal dan fitur keamanan dapat berjalan tanpa membebani kinerja server, diperlukan spesifikasi perangkat keras dan perangkat lunak sebagai berikut:
+1. Spesifikasi Perangkat Keras (Hardware)
+      Dalam menjalakan aplikasi ini penulis menyarankan spesifikasi perangkat keras minimum untuk menjalankan sistem ini:
+a. Processor: Minimal Dual Core 2.4 GHz
+b. Memory (RAM): Minimal 4 GB
+c. Storage: HDD atau SSD 256 GB
+d. Koneksi Internet
+e. Perangkat: PC Desktop, Laptop, Smartphone
+f. Printer
+2. Spesifikasi Perangkat Lunak (Software)
+      Perangkat lunak atau peranti lunak adalah istilah khusus untuk data yang diformat dan disimpan secara digital, termasuk program komputer, dokumentasi nya, dan berbagai informasi yang bisa dibaca, dan ditulis oleh komputer. Dengan kata lain, bagian sistem komputer yang tidak berwujud. Istilah ini menonjolkan perbedaan dengan perangkat keras komputer. Adapun perangkat yang diperlukan sebagai berikut yaitu :
+a. Sistem Operasi: Windows 10/11
+b. Web Server: Apache atau Nginx
+c. Bahasa Pemrograman: PHP 8.2
+d. Basis Data: MySQL 8.0
+e. Framework Aplikasi: Laravel 12
+f. Web Browser: Google Chrome, Mozilla Firefox, atau Microsoft Edge
+g. Text Editor: Visual Studio Code
+3.1.3 Usulan Tenaga Kerja
+    Untuk pengoperasian aplikasi ini di harapkan ditangani oleh staff atau pegawai yang sudah bisa mengoperasikan aplikasi via Komputer/ Laptop/ Smartphone
+3.2 Perancangan Model Sistem
+    Perancangan model sistem dilakukan menggunakan pendekatan Unified Modeling Language (UML) untuk menggambarkan struktur, perilaku, dan interaksi antar komponen dalam sistem. Pemodelan ini bertujuan untuk memberikan gambaran visual yang jelas mengenai alur logika keamanan yang diterapkan, mulai dari interaksi pengguna hingga struktur basis data.
+3.2.1 Use Case Diagram
+    Berikut adalah gambaran Use Case Diagram sistem:
+
+Gambar 3.2 Use Case Diagram
+   Use Case Diagram mendeskripsikan fungsionalitas sistem dari sudut pandang aktor yang terlibat. Terdapat 5 aktor utama dalam sistem ini, yaitu:
+1. Pengunjung hanya dapat melihat konten berita yang dipublikasikan dan melakukan proses login atau registrasi untuk menjadi member
+2. Member dapat mengelola profil pribadi serta berinteraksi dengan artikel melalui fitur komentar dan like
+3. Penulis dapat membuat artikel baru dan memiliki akses untuk menulis draft artikel.
+4. Editor dapat melakukan publikasi artikel, mengelola konten (kategori, tag, galeri).
+5. Admin Admin dapat mengakses pengaturan sistem dan manajemen pengguna, serta mempunyai kendali kepada seluruh fitur
+
+
+3.2.2 Activity Diagram
+1. Activity Diagram Login
+
+Gambar 3.3 Activity Diagram Sistem Login
+   Proses login dimulai saat pengguna mengakses halaman login dan memasukkan email serta password. Sistem kemudian melakukan validasi kredensial, jika gagal akan menampilkan pesan error dan pengguna diminta untuk mencoba kembali. Jika validasi berhasil, sistem memeriksa apakah email sudah terverifikasi. Apabila belum terverifikasi, pengguna akan diarahkan ke halaman verifikasi email. Jika sudah terverifikasi, sistem mengecek role pengguna untuk menentukan halaman tujuan: member akan diarahkan ke homepage publik, sedangkan admin atau editor akan diarahkan ke dashboard.
+2. Activity Diagram Registrasi
+
+Gambar 3.4 Activity Diagram Sistem Registrasi
+   Proses registrasi dimulai saat pengguna mengakses form pendaftaran dan mengisi data berupa nama, email, dan password. Sistem kemudian melakukan validasi input, jika tidak valid akan menampilkan pesan error. Setelah validasi berhasil, sistem memeriksa apakah email sudah terdaftar sebelumnya. Jika email sudah digunakan, akan muncul pesan error. Jika email belum terdaftar, sistem menyimpan data user baru ke database, kemudian membuat kode OTP dan mengirimkannya melalui email. Setelah itu, pengguna diarahkan ke halaman verifikasi email untuk memasukkan kode OTP yang diterima.
+3. Activity Diagram Kelola Artikel
+Gambar 3.5 Activity Diagram Kelola Sistem Artikel
+
+   Proses kelola artikel dimulai saat admin atau editor mengakses menu artikel. Sistem memeriksa apakah pengguna sudah login, jika belum akan diarahkan ke halaman login. Setelah terautentikasi, sistem menampilkan daftar artikel yang tersedia. Pengguna dapat memilih beberapa aksi, yaitu menambah artikel baru dengan mengisi form yang tersedia, mengedit artikel yang sudah ada, menghapus artikel dengan konfirmasi terlebih dahulu, atau melihat detail artikel. Setiap aksi yang melibatkan perubahan data akan melalui proses validasi terlebih dahulu.
+4. Activity Diagram Kelola Galeri
+Gambar 3.6 Activity Diagram Kelola Sistem Galeri
+   Proses kelola galeri dimulai saat pengguna mengakses menu galeri dan sistem memverifikasi status autentikasi. Jika terautentikasi, sistem menampilkan daftar galeri yang ada. Pengguna dapat melakukan beberapa aksi: upload file baru dengan validasi format (hanya gambar atau video yang diizinkan), edit informasi galeri seperti judul, album, dan deskripsi, menghapus item galeri dengan konfirmasi, atau mengubah status publikasi untuk menampilkan atau menyembunyikan item dari halaman publik.
+5. Activity Diagram Halaman Publik
+Gambar 3.7 Activity Diagram Halaman Sistem Publik
+   Proses halaman publik dimulai saat pengunjung mengakses website dan melihat homepage. Dari homepage, pengunjung dapat melakukan navigasi ke beberapa halaman: halaman artikel untuk melihat daftar berita dengan fitur filter dan pencarian, halaman galeri untuk melihat foto dan video, atau halaman profil. Untuk melihat detail artikel, pengunjung bisa langsung membaca kontennya, namun fitur like dan komentar hanya tersedia bagi pengguna yang sudah login. Demikian juga untuk mengakses halaman profil, pengguna harus login terlebih dahulu
+6. Activity Diagram Pengaturan Website
+
+Gambar 3.8 Activity Diagram Pengaturan Sistem Website
+   Proses pengaturan website dimulai saat pengguna mengakses menu pengaturan. Sistem terlebih dahulu memeriksa apakah pengguna memiliki role admin, jika tidak maka akses akan ditolak. Bagi admin, sistem menampilkan halaman pengaturan dengan beberapa tab: tab umum untuk mengatur nama dan deskripsi website, tab tampilan untuk upload logo dan favicon, tab kontak untuk mengatur informasi kontak dan sosial media, serta tab email untuk konfigurasi SMTP. Setelah melakukan perubahan dan menekan tombol simpan, sistem memvalidasi input dan menyimpan pengaturan ke database jika valid.
+
+
+3.2.3 Sequence Diagram
+    Sequence diagram adalah diagram yang menggambarkan interaksi antar objek dalam suatu sistem berdasarkan urutan waktu. Berikut adalah gambaran Seqeunce Diagram sistem:
+1. Diagram Sequence Autentikasi & Keamanan Akun
+Gambar 3.9 Diagram Sequence Sistem  Autentikasi & Keamanan Akun
+
+   Diagram tersebut menggambarkan proses autentikasi pengguna ketika melakukan login ke dalam sistem. Sistem dilengkapi dengan mekanisme keamanan berupa pembatasan percobaan login (rate limiting) dan pemblokiran IP untuk mencegah serangan brute-force. Apabila pengguna memasukkan kredensial yang salah berulang kali, akun akan dikunci sementara untuk melindungi keamanan data.
+2. Diagram Sequence Pendaftaran Akun Baru
+Gambar 3.10 Diagram Sequence Sistem Pendaftaran Akun Baru
+
+   Diagram tersebut menggambarkan alur pendaftaran akun baru bagi pengguna publik (Member). Proses registrasi menggunakan sistem verifikasi dua langkah melalui kode OTP (One-Time Password) yang dikirimkan ke email pengguna. Pengguna harus memasukkan kode OTP yang valid untuk mengaktifkan akun dan dapat mengakses fitur-fitur yang memerlukan autentikasi.
+
+
+3. Diagram Sequence Pemulihan Kata Sandi
+Gambar 3.11 Diagram Sequence Sistem Pemulihan Kata Sandi
+
+   Diagram tersebut menggambarkan proses pemulihan kata sandi bagi pengguna yang lupa kredensial loginnya. Sistem menggunakan metode verifikasi OTP untuk memastikan bahwa permintaan reset password benar-benar berasal dari pemilik akun. Setelah kode OTP diverifikasi, pengguna dapat membuat kata sandi baru dan mengakses kembali akunnya.
+
+
+4. Diagram Sequence Konten Publik
+
+Gambar 3.12 Diagram Sequence Sistem Konten Publik
+   Diagram tersebut menggambarkan proses pengambilan dan penampilan konten berita kepada pengunjung publik. Ketika pengunjung mengakses halaman detail berita, sistem akan mengambil data dari database, menambahkan jumlah view, dan menampilkan konten lengkap beserta berita terkait. Proses ini merupakan inti dari fungsi portal berita sebagai media informasi.
+
+
+5. Diagram Sequence Interaksi Pengguna
+Gambar 3.13 Diagram Sequence Sistem Interaksi Pengguna
+
+   Diagram berikut menggambarkan proses interaksi sosial antara pengguna terautentikasi dengan konten berita. Fitur ini memungkinkan pengguna memberikan tanda suka (like) dan komentar pada berita. Sistem dilengkapi dengan mekanisme pembatasan untuk mencegah spam, memastikan interaksi yang sehat antar pengguna dalam komunitas portal berita.
+
+
+6. Diagram Sequence Pengelolaan Berita
+Gambar 3.14 Diagram Sequence Sistem Pengelolaan Berita
+
+   Diagram tersebut menggambarkan alur kerja editorial dalam pengelolaan konten berita, mulai dari pembuatan draft oleh penulis hingga publikasi oleh editor atau admin. Penulis (Author) dapat membuat berita yang akan berstatus "menunggu review", kemudian Editor atau Admin akan melakukan review dan mempublikasikan berita tersebut agar dapat diakses oleh publik.
+7. Diagram Sequence Pengelolaan Galeri
+
+Gambar 3.15 Diagram Sequence Sistem Pengelolaan Galeri
+   Diagram tersebut menggambarkan proses pengunggahan dan pengelolaan media galeri secara massal. Sistem mendukung pengunggahan banyak file sekaligus dengan proses optimasi gambar otomatis, pembuatan thumbnail, dan ekstraksi metadata. Fitur ini memudahkan staf dalam mengelola aset visual portal berita secara efisien.
+8. Diagram Sequence Pengelolaan User
+Gambar 3.16 Diagram Sequence Sistem Pengelolaan User
+
+   Diagram Tersebut menggambarkan proses pengelolaan data pengguna oleh Admin. Admin memiliki wewenang untuk menambah, mengubah, dan menghapus data pengguna dalam sistem. Setiap perubahan yang dilakukan akan dicatat dalam log aktivitas untuk keperluan audit dan keamanan sistem.
+
+
+9. Diagram Sequence Pemantauan Keamanan Sistem
+Gambar 3.17 Diagram Sequence Sistem Pemantauan Keamanan Sistem
+
+   Diagram tersebut menggambarkan mekanisme pemantauan keamanan sistem yang mencakup pencatatan aktivitas mencurigakan dan pemblokiran IP secara otomatis maupun manual. Sistem akan secara otomatis memblokir IP yang terdeteksi melakukan aktivitas mencurigakan berulang kali, atau Admin dapat melakukan pemblokiran manual terhadap IP tertentu.
+
+
+10. Diagram Sequence Manajemen Tong Sampah
+
+Gambar 3.18 Diagram Sequence Sistem Manajemen Tong Sampah
+
+   Diagram tersebut menggambarkan proses pengelolaan data yang telah dihapus sementara (soft delete). Fitur tong sampah memberikan lapisan keamanan tambahan dengan memungkinkan pemulihan data sebelum dihapus secara permanen. Admin atau penulis dapat memulihkan data yang tidak sengaja terhapus atau menghapus permanen data yang sudah tidak diperlukan.
+
+
+3.2.4 Class Diagram
+    Berikut adalah gambaran Class Diagram sistem:
+
+Gambar 3.19 Class Diagram
+   Diagram di atas menggambarkan hubungan antar entitas (class) dalam sistem Website. Berikut adalah penjelasan dari masing-masing relasi:
+1. user merupakan entitas pusat yang terhubung dengan hampir seluruh entitas lainnya. user dapat menulis banyak article, mengirim banyak article_comment, memberikan article_like, mengunggah gallery, dan setiap aktivitasnya tercatat di activity_log.
+2. article memiliki hubungan dengan:
+* Satu user sebagai penulis
+* Satu category sebagai klasifikasi
+* Banyak tag untuk penandaan topik
+* Banyak article_comment sebagai komentar pembaca
+* Banyak article_like sebagai apresiasi pembaca
+3. article_comment memiliki relasi self-referencing, yang memungkinkan komentar memiliki balasan bersarang. Setiap komentar terhubung ke satu article dan satu user.
+4. article_like merupakan tabel pivot yang menghubungkan user dengan article yang disukai.
+5. category berfungsi sebagai pengelompokan artikel, dimana satu kategori dapat memuat banyak artikel.
+6. gallery menyimpan media (gambar/video) yang diunggah oleh user.
+7. activity_log mencatat seluruh aktivitas pengguna dalam sistem untuk keperluan audit dan keamanan.
+3.3 Perancangan Database
+3.3.1 Rancangan Tabel
+    berikut adalah rancangan table website berita btikp kalimantan selatan dengan implementasi rate limiting, input validation, dan activity logging untuk melindungi sistem dari serangan injeksi kontendan akses tidak sah:
+1. Tabel users
+Tabel 3.1 Tabel users
+NONama FieldTipe DataKeterangan1IdBIGINTPK2nameVARCHAR-3emailVARCHAR-4email_verified_atTIMESTAMP-5passwordVARCHAR-6phoneVARCHAR-7positionVARCHAR-8bioTEXT-9locationVARCHAR-10profile_photoVARCHAR-11roleVARCHAR-12remember_tokenVARCHAR-13last_login_atTIMESTAMP-14last_login_ipVARCHAR-15failed_login_countINT-16locked_untilTIMESTAMP-17created_atTIMESTAMP-18updated_atTIMESTAMP-19deleted_atTIMESTAMP-
+2. Tabel articles
+Tabel 3.2 Tabel articles
+NONama FieldTipe DataKeterangan1idBIGINTPK2titleVARCHAR-3slugVARCHAR-4excerptTEXT-5contentLONGTEXT-6thumbnailVARCHAR-7categoryVARCHAR-8category_idBIGINTFK9read_timeINT-10statusENUM-11security_statusENUM-12security_messageVARCHAR-13security_detailVARCHAR-14author_idBIGINTFK15meta_titleVARCHAR-16meta_descriptionTEXT-17meta_keywordsVARCHAR-18viewsBIGINT-19published_atTIMESTAMP-20created_atTIMESTAMP-21updated_atTIMESTAMP-22deleted_atTIMESTAMP-
+3. Tabel categories
+Tabel 3.3 Tabel categories
+NONama FieldTipe DataKeterangan1idBIGINTPK2nameVARCHAR-3slugVARCHAR-4descriptionTEXT-5colorVARCHAR-6iconVARCHAR-7sort_orderINT-8is_activeTINYINT-9created_atTIMESTAMP-10updated_atTIMESTAMP-11deleted_atTIMESTAMP-
+4. Tabel tags
+Tabel 3.4 Tabel tags
+NONama FieldTipe DataKeterangan1idBIGINTPK2nameVARCHAR-3slugVARCHAR-4is_activeTINYINT-5created_atTIMESTAMP-6updated_atTIMESTAMP-7deleted_atTIMESTAMP-
+5. Tabel article_tag
+Tabel 3.5 Tabel article_tag
+NONama FieldTipe DataKeterangan1article_idBIGINTPK, FK2tag_idBIGINTPK, FK
+6. Tabel article_comments
+Tabel 3.6 Tabel article_comments
+NONama FieldTipe DataKeterangan1idBIGINTPK2article_idBIGINTFK3user_idBIGINTFK4parent_idBIGINTFK5comment_textTEXT-6statusENUM-7is_admin_replyTINYINT-8ip_addressVARCHAR-9created_atTIMESTAMP-10updated_atTIMESTAMP-
+
+
+
+7. Tabel article_likes
+Tabel 3.7 Tabel article_likes
+NONama FieldTipe DataKeterangan1idBIGINTPK2article_idBIGINTFK3user_idBIGINTFK4created_atTIMESTAMP-5updated_atTIMESTAMP-
+8. Tabel galleries
+Tabel 3.8 Tabel galleries
+NONama FieldTipe DataKeterangan1idBIGINTPK2titleVARCHAR-3descriptionTEXT-4image_pathVARCHAR-5thumbnail_pathVARCHAR-6media_typeENUM-7video_urlVARCHAR-8albumVARCHAR-9event_dateDATE-10locationVARCHAR-11is_featuredTINYINT-12is_publishedTINYINT-13sort_orderINT-14uploaded_byBIGINTFK15published_atTIMESTAMP-16created_atTIMESTAMP-17updated_atTIMESTAMP-18deleted_atTIMESTAMP-
+9. Tabel site_settings
+Tabel 3.9 Tabel site_settings
+NONama FieldTipe DataKeterangan1idBIGINTPK2keyVARCHAR-3valueLONGTEXT-4typeVARCHAR-5groupVARCHAR-6labelVARCHAR-7descriptionTEXT-8is_publicTINYINT-9created_atTIMESTAMP-10updated_atTIMESTAMP-
+10. Tabel activity_logs
+Tabel 3.10 Tabel activity_logs
+NONama FieldTipe DataKeterangan1idBIGINTPK2user_idBIGINTFK3actionVARCHAR-4descriptionTEXT-5subject_typeVARCHAR-6subject_idBIGINT-7old_valuesJSON-8new_valuesJSON-9ip_addressVARCHAR-10user_agentTEXT-11urlVARCHAR-12levelVARCHAR-13created_atTIMESTAMP-14deleted_atTIMESTAMP-
+11. Tabel blocked_clients
+Tabel 3.11 Tabel blocked_clients
+YNONama FieldTipe DataKeterangan1idBIGINTPK2ip_addressVARCHAR-3user_agentTEXT-4attempt_countINT-5is_blockedTINYINT-6blocked_untilTIMESTAMP-7reasonVARCHAR-8blocked_routeVARCHAR-9created_atTIMESTAMP-10updated_atTIMESTAMP-
+12. Tabel otp_codes
+Tabel 3.12 Tabel otp_codes
+NONama FieldTipe DataKeterangan1idBIGINTPK2emailVARCHAR-3codeVARCHAR-4typeVARCHAR-5attemptsINT-6expires_atTIMESTAMP-7created_atTIMESTAMP-8updated_atTIMESTAMP-
+13. Tabel sessions
+Tabel 3.13 Tabel sessions
+NONama FieldTipe DataKeterangan1idVARCHARPK2user_idBIGINTFK3ip_addressVARCHAR-4user_agentTEXT-5payloadLONGTEXT-6last_activityINT-
+14. Tabel personal_access_tokens
+Tabel 3.14 Tabel personal_access_tokens
+NONama FieldTipe DataKeterangan1idBIGINTPK2tokenable_typeVARCHAR-3tokenable_idBIGINT-4nameVARCHAR-5tokenVARCHAR-6abilitiesTEXT-7last_used_atTIMESTAMP-8expires_atTIMESTAMP-9created_atTIMESTAMP-10updated_atTIMESTAMP-15. Tabel cache
+Tabel 3.15 Tabel cache
+NONama FieldTipe DataKeterangan1keyVARCHARPK2valueMEDIUMTEXT-3expirationINT-
+16. Tabel cache_locks
+Tabel 3.16 Tabel cache_locks
+NONama FieldTipe DataKeterangan1keyVARCHARPK2ownerVARCHAR-3expirationINT-
+17. Tabel migrations	
+Tabel 3.17 Tabel cache_locks
+NONama FieldTipe DataKeterangan1idINTPK2migrationVARCHAR-3batchINT-
+3.3.2 Relasi Antar Tabel
+    berikut adalah relasi table sistem website berita btikp kalimantan selatan dengan implementasi rate limiting, input validation, dan activity logging untuk melindungi sistem dari serangan injeksi kontendan akses tidak sah:
+Gambar 3.20 Relasi Antar Tabel
+3.4 Perancangan Antarmuka Sistem
+    Perancangan antarmuka (User Interface Design) merupakan tahapan visualisasi awal untuk menggambarkan tata letak dan interaksi pengguna pada sistem yang akan dibangun. Rancangan ini dibuat dengan mengutamakan aspek kemudahan penggunaan (user friendly) serta kejelasan informasi, khususnya terkait fitur-fitur keamanan yang menjadi fokus utama sistem.
+
+
+3.4.1 Perancangan Antarmuka Masukan Sistem
+    Perancangan antarmuka masukan (Input Design) berfokus pada halaman-halaman yang berfungsi sebagai media interaksi pengguna untuk memasukkan data ke dalam sistem.
+1. Rancangan Halaman login
+Gambar 3.21 Rancangan Halaman login
+
+    Rancangan antarmuka ini berfungsi sebagai gerbang utama autentikasi sistem dan memastikan pengguna terdaftar dapat mengakses dashboard pengelolaan dengan aman
+
+
+2. Rancangan Halaman Registrasi
+
+Gambar 3.22 Rancangan Halaman Registrasi
+
+    Rancangan halaman registrasi bertujuan untuk memfasilitasi pendaftaran pengguna baru. 
+3. Rancangan Verifikasi Email Registrasi
+Gambar 3.23 Rancangan Verifikasi Email Registrasi
+
+    Rancangan verifikasi email berfungsi untuk memastikan kepemilikan akun.
+4. Rancangan Pesan Email OTP Registrasi
+
+Gambar 3.24 Rancangan Pesan Email OTP Registrasi
+    Rancangan pesan ini merupakan standar format komunikasi sistem kepada pengguna. Tujuannya adalah menyampaikan kode otentikasi dengan layout yang jelas dan kredibel agar mudah dibaca oleh pengguna saat melakukan verifikasi.
+
+
+5. Rancangan Halaman Reset Password
+
+Gambar 3.25 Rancangan Halaman Reset Password
+
+    Rancangan ini menyediakan antarmuka untuk fitur pemulihan akses. Halaman ini menjadi acuan alur permohonan pengaturan ulang kata sandi yang aman ketika pengguna mengalami kendala saat mencoba masuk ke sistem.
+
+
+6. Rancangan Verifikasi Email Reset Password
+
+Gambar 3.26 Rancangan Verifikasi Email Reset Password
+
+    Antarmuka ini dirancang untuk memvalidasi kepemilikan akun sebelum proses penggantian kata sandi dapat dilakukan. Halaman ini menjadi acuan mekanisme keamanan tambahan untuk mencegah akses tidak sah terhadap fitur pemulihan akun.
+
+
+7. Rancangan Pesan Email OTP Reset Password
+
+Gambar 3.27 Rancangan Pesan Email OTP Reset Password
+    Rancangan ini bertujuan menstandarisasi format pengiriman kode rahasia kepada pengguna. Tata letaknya dirancang agar kode OTP terlihat jelas dan mencolok.
+
+
+8. Rancangan Halaman Reset Password
+
+Gambar 3.28 Rancangan Halaman Reset Password
+
+    Halaman ini berfungsi sebagai wadah bagi pengguna untuk menetapkan password baru. Rancangan ini menjadi referensi penerapan aturan keamanan pada antarmuka.
+
+
+9. Rancangan antarmuka akun terkunci
+
+Gambar 3.29 Rancangan antarmuka akun terkunci
+
+    Antarmuka ini merupakan mekanisme pertahanan sistem aktif saat terdeteksi aktivitas mencurigakan. antarmuka ini bertujuan memberikan umpan balik visual yang jelas kepada pengguna mengenai status pembatasan sementara akibat percobaan login yang berulang (Brute Force).
+
+
+10. Rancangan Halaman Dashboard Admin
+
+Gambar 3.30 Rancangan Halaman Dashboard Admin
+
+    Rancangan dashboard ini berfungsi sebagai pusat kendali utama bagi admin. Antarmuka ini menjadi referensi tata letak untuk menyajikan ringkasan data vital, memantau statistik konten, serta mengawasi status keamanan sistem secara real-time dalam satu pandangan terintegrasi.
+
+
+11. Rancangan Halaman Dasboard Author
+
+Gambar 3.31 Rancangan Halaman Dasboard Author
+
+    Rancangan ini dikhususkan untuk peran Author yang memiliki hak akses terbatas. Dashboard ini berfungsi sebagai ruang kerja personal untuk memantau performa artikel individu dan mempercepat alur kerja penulisan. Fungsi utama dari dashboard role author adalah hanya menulis dan mengelola berita saja.
+12. Rancangan Halaman Dashboard Editor
+
+Gambar 3.32 Rancangan Halaman Dashboard Editor
+
+    Antarmuka ini dirancang sebagai pusat kendali redaksi bagi peran Editor. Tujuannya adalah memfasilitasi pengawasan kualitas konten, pengelolaan antrean rilis berita. Selain untuk menulis dan mengelola berita, dashboard dengan role editor ini bisa melakukan publikasi berita baru.
+
+
+13. Rancangan Halaman Kelola Berita
+Gambar 3.33 Rancangan Halaman Kelola Berita
+
+    Rancangan ini berfungsi sebagai inventaris utama seluruh konten berita. halaman ini menjadi standar antarmuka manajemen data yang memungkinkan pengelola untuk menelusuri, menyaring, dan mengubah status publikasi artikel secara efisien dalam satu tampilan terpusat
+
+
+14. Rancangan Modal Tambah Kelola Berita
+
+Gambar 3.34 Rancangan Modal Tambah Kelola Berita
+
+    Modal ini dirancang untuk menstandarisasi struktur input data artikel baru. modal inilah yang menjadi alat untuk membuat sebuah berita
+15. Rancangan Modal Edit Kelola Berita
+
+Gambar 3.35 Rancangan Modal Edit Kelola Berita
+
+    Rancangan ini menyediakan mekanisme untuk pengeditan konten yang sudah ada. Desainnya mempertahankan konsistensi struktur dengan fitur penambahan berita.
+16. Rancangan Modal Lihat Detail Berita
+
+Gambar 3.36 Rancangan Modal Lihat Detail Berita
+
+    Rancangan Modal untuk melihat detail konten berita yang sudah di buat, modal ini menyajikan tampilan pratinjau artikel secara lengkap beserta metadata teknisnya.
+
+
+17. Rancangan Modal Statistik
+
+Gambar 3.37 Rancangan Modal Statistik
+
+    Rancangan modal untuk menyediakan antarmuka analitik mendalam pada setiap artikel secara spesifik. Fungsinya adalah memvisualisasikan data interaksi pengguna serta mendeteksi potensi anomali aktivitas (seperti spam) dengan cepat.
+
+
+18. Rancangan Halaman  Kategori
+
+Gambar 3.38 Rancangan Halaman  Kategori
+
+    Rancangan Halaman ini berfungsi sebagai pusat pengelolaan kategori berita.
+19. Rancangan Modal Tambah Kategori
+
+Gambar 3.39 Rancangan Modal Tambah Kategori
+
+    Modal ini dirancang untuk memfasilitasi pembuatan grup kategori baru.
+20. Rancangan Modal Edit Kategori
+
+Gambar 3.40 Rancangan Modal Edit Kategori
+
+    Rancangan ini bertujuan menyediakan mekanisme pembaruan atribut kategori. Desainnya menyertakan pratinjau visual langsung (live preview).
+21. Rancangan Modal Detail Kategori
+
+Gambar 3.41 Rancangan Modal Detail Kategori
+
+    Rancangan modal ini berfungsi untuk menampilkan ringkasan informasi kategori dalam mode baca-saja sebelum pengguna memutuskan untuk melakukan penyuntingan.
+22. Rancangan Halaman Tag
+
+Gambar 3.42 Rancangan Halaman Tag
+
+    Rancangan halaman ini digunakan untuk antarmuka pengelolaan tag sebagai pelengkap sistem klasifikasi konten.
+23. Rancangan Modal Tambah Tag
+
+Gambar 3.43 Rancangan Modal Tambah Tag
+
+    Rancangan modal ini digunakan pembuatan label baru dengan struktur input minimalis sesuai fungsi tag sebagai penanda ringan.
+24. Rancangan Modal Edit Tag
+
+Gambar 3.44 Rancangan Modal Edit Tag
+
+    Rancangan modal ini menyediakan mekanisme pembaruan atribut tag yang sudah ada, termasuk pengaturan status aktif/nonaktif.
+
+
+25. Rancangan Modal Lihat Detail Tag
+
+Gambar 3.45 Rancangan Modal Lihat Detail Tag
+
+    Rancangan modal ini menampilkan informasi lengkap tag dalam mode baca.
+
+
+26. Rancangan Halaman Galeri Kegiatan
+
+Gambar 3.46 Rancangan Halaman Galeri Kegiatan
+
+    Rancangan halaman ini berfungsi sebagai pusat pengelolaan dokumentasi visual kegiatan.
+27. Rancangan Modal Tambah Galeri
+
+Gambar 3.47 Rancangan Modal Tambah Galeri
+
+    Rancangan modal ini digunakan untuk mengunggah dokumentasi kegiatan baru.
+
+
+28. Rancangan Modal Edit Galeri
+
+Gambar 3.48 Rancangan Modal Edit Galeri
+
+    Rancangan modal ini menyediakan mekanisme pembaruan/pengeditan informasi galeri yang sudah melalui navigasi tab.
+29. Rancangan Modal Detail Gambar
+
+Gambar 3.49 Rancangan Modal Detail Gambar
+
+    Rancangan modal ini menampilkan pratinjau dan informasi lengkap item galeri.
+30. Rancangan Halaman Log Aktifitas
+
+Gambar 3.50 Rancangan Halaman Log Aktifitas
+
+    Rancangan halaman ini berfungsi sebagai audit trail untuk mencatat dan menelusuri seluruh aktivitas pengguna dalam sistem.
+31. Rancangan Modal Detail Log Aktifitas
+
+Gambar 3.51 Rancangan Modal Detail Log Aktifitas
+
+    Rancangan modal ini digunakan untuk informasi forensik lengkap per entri log untuk keperluan investigasi keamanan.
+
+
+32. Rancangan Halaman Blokir Ips
+
+Gambar 3.52 Rancangan Halaman Blokir Ips
+
+    Rancangan halaman ini menyediakan antarmuka pengelolaan daftar alamat IP yang dibatasi aksesnya ke sistem.
+33. Rancangan Modal Tambah Blokir Ips
+
+Gambar 3.53 Rancangan Modal Tambah Blokir Ips
+
+    Rancangan modal ini digunakan untuk pemblokiran IP secara manual sebagai respons cepat terhadap ancaman keamanan.
+
+
+34. Rancangan Modal Edit Blokir Ips
+
+Gambar 3.54 Rancangan Modal Edit Blokir Ips
+
+    Rancangan modal ini menyediakan mekanisme pembaruan status dan durasi pemblokiran IP.
+35. Rancangan Modal Detail Blokir Ips
+
+Gambar 3.55 Rancangan Modal Detail Blokir Ips
+
+    Rancangan modal ini menampilkan ringkasan status pemblokiran IP untuk kebutuhan review keamanan.
+36. Rancangan Halaman Laporan
+
+Gambar 3.56 Rancangan Halaman Laporan
+
+    Rancangan halaman ini mengkonsolidasikan seluruh modul pelaporan sistem dalam satu halaman terpusat.
+37. Rancangan Halaman Pengaturan
+
+Gambar 3.57 Rancangan Halaman Pengaturan
+
+    Rancangan halaman ini berfungsi sebagai pusat konfigurasi Website yang mengorganisir pengaturan ke dalam beberapa tab.
+
+
+38. Rancangan Halaman Management User
+
+Gambar 3.58 Rancangan Halaman Management User
+
+    Rancangan halaman ini digunakan untuk pengelolaan akun pengguna beserta pengaturan peran dan hak akses.
+39. Rancangan Modal Tambah User
+
+Gambar 3.59 Rancangan Modal Tambah User
+
+    Rancangan modal ini digunakan untuk pembuatan akun pengguna baru.
+
+
+40. Rancangan Modal Edit User
+
+Gambar 3.60 Rancangan Modal Edit User
+
+    Rancangan modal ini menyediakan mekanisme pembaruan/pengeditan data profil dan peran pengguna.
+41. Rancangan Modal Lihat Detail User
+
+Gambar 3.61 Rancangan Modal Lihat Detail User
+
+    Rancangan modal ini menampilkan profil lengkap pengguna dalam mode baca-saja.
+
+
+42. Rancangan Halaman Tong Sampah
+
+Gambar 3.62 Rancangan Halaman Tong Sampah
+
+    Rancangan halaman ini menyediakan mekanisme pemulihan (recovery) item yang terhapus sementara (soft-delete).
+
+
+43. Rancangan Halaman Profile
+
+Gambar 3.63 Rancangan Halaman Profile
+
+    Rancangan halaman ini berfungsi sebagai halaman akun pribadi pengguna yang sedang login.
+
+
+44. Rancangan Halaman Modal Notifikasi
+
+Gambar 3.64 Rancangan Halaman Modal Notifikasi
+
+    Rancangan modal ini menampilkan daftar pemberitahuan (notifikasi) sistem .
+
+
+45. Rancangan Halaman Beranda Publik
+
+Gambar 3.65 Rancangan Halaman Beranda Publik
+
+    Rancangan halaman ini berfungsi sebagai halaman utama website yang menyajikan konten unggulan kepada pengunjung.
+
+
+46. Rancangan Halaman Semua Berita Publik
+
+Gambar 3.66 Rancangan Halaman Semua Berita Publik
+
+    Rancangan halaman ini menyediakan halaman arsip berita dengan fitur pencarian dan filter kategori.
+
+
+47. Rancangan Halaman Detail Berita Publik
+
+Gambar 3.67 Rancangan Halaman Detail Berita Publik
+
+    Rancangan halaman ini menampilkan konten artikel lengkap beserta fitur interaksi pembaca seperti komentar, like dan berbagi.
+
+
+48. Rancangan Halaman Galeri Publik
+
+Gambar 3.68 Rancangan Halaman Galeri Publik
+
+    Rancangan halaman ini menampilkan dokumentasi visual kegiatan kepada publik dengan filter berdasarkan tipe media."
+
+
+49. Rancangan Halaman Pusat Akun
+
+Gambar 3.69 Rancangan Halaman Pusat Akun
+
+    Rancangan halaman ini berfungsi sebagai halaman pengelolaan akun bagi pengguna publik yang terdaftar.
+3.4.2  Perancangan Antarmuka Keluaran Sistem
+    Perancangan antarmuka keluaran (Output Design) berfokus pada penyajian informasi hasil pemrosesan data, laporan statistik, dan status sistem kepada pengguna.
+1. Rancangan Laporan Berita
+
+Gambar 3.70 Rancangan Laporan Berita
+
+    Rancangan laporan ini menampilkan rekap data artikel beserta status publikasinya.
+
+
+2. Rancangan Laporan Kategori
+
+Gambar 3.71 Laporan Kategori
+
+    Rancangan laporan ini menampilkan rekap distribusi konten per kategori dalam format dokumen formal.
+
+
+3. Rancangan Laporan Pengguna
+
+Gambar 3.72 Laporan Pengguna
+
+    Rancangan laporan menampilkan rekap audit keanggotaan (member) dengan data akun.
+
+
+4. Rancangan Laporan Log Aktifitas
+
+Gambar 3.73 Rancangan Laporan Log Aktifitas
+
+    Rancangan laporan ini menampilkan rekap audit trail untuk keperluan investigasi dan dokumentasi.
+
+
+5. Rancangan Laporan Ip Terblokir
+
+Gambar 3.74 Rancangan Laporan Ip Terblokir
+
+    Rancangan laporan ini menampilkan rekap insiden keamanan dengan menyajikan data forensik pemblokiran IP.
+
+
+6. Rancangan Laporan Galeri
+
+Gambar 3.75 Rancangan Laporan Galeri
+
+    Rancangan laporan ini menampilkan rekap inventaris aset media dan dokumentasi kegiatan dalam format laporan resmi.
+3.5 Hasil Tampilan Aplikasi
+    Hasil Tampilan Aplikasi adalah hasil implementasi antarmuka aplikasi yang telah dibangun, dikelompokkan berdasarkan fungsinya sebagai media masukan (input) dan keluaran (output).
+3.5.1 Tampilan Antarmuka Masukan Sistem (input)
+    Bagian ini menampilkan halaman-halaman yang berfungsi untuk menerima interaksi atau data dari pengguna.
+
+
+1. Tampilan Halaman Login
+Gambar 3.76 Tampilan Halaman Login
+
+    Halaman ini berfungsi sebagai gerbang autentikasi pengguna untuk mengakses dashboard portal. Antarmuka menyediakan dua kolom masukan utama yaitu Identity (email) dan Security Code (password), dilengkapi opsi "Ingat Saya" serta tautan pemulihan kata sandi. Sistem menerapkan mekanisme Rate Limiting pada backend jika terjadi kesalahan input kredensial lebih dari batas yang ditentukan, sistem akan memblokir sementara akses dari IP tersebut untuk mencegah serangan Brute Force.
+
+
+2. Tampilan Halaman Registrasi
+Gambar 3.77 Tampilan Halaman Registrasi
+
+    Antarmuka ini memfasilitasi pengguna baru untuk mendaftarkan akun. Formulir pendaftaran terdiri dari empat kolom input yaitu Nama Lengkap, Email, Password, dan Konfirmasi Password, serta checkbox persetujuan kebijakan privasi. Sistem menerapkan Input Validation secara real-time di sisi klien dan server validasi meliputi format email, kekuatan password minimal, dan pencocokan konfirmasi password untuk memastikan integritas data sebelum disimpan ke database.
+
+
+3. Halaman Verifikasi Email OTP Registrasi
+Gambar 3.78 Tampilan Halaman Verifikasi Email Registrasi
+
+    Halaman ini muncul setelah proses registrasi untuk memverifikasi kepemilikan email pengguna. Input berupa 6 digit kode OTP (One-Time Password) yang dimasukkan ke dalam kolom terpisah, dengan fitur countdown timer untuk pengiriman ulang kode. Mekanisme keamanan yang diterapkan mencakup validasi waktu kedaluwarsa OTP dan pembatasan jumlah percobaan input jika kode salah melebihi batas atau waktu habis, pengguna harus meminta kode baru untuk mencegah eksploitasi otomatis.
+
+
+4. Tampilan Pesan Email OTP Registrasi
+
+Gambar 3.79 Tampilan Pesan Email OTP Registrasi
+
+    Antarmuka ini merupakan tampilan email yang diterima pengguna berisi kode verifikasi OTP 6 digit. Email menampilkan informasi penting termasuk nama penerima, kode OTP dengan format visual yang jelas, dan masa berlaku kode (10 menit). Sebagai lapisan keamanan tambahan, email menyertakan peringatan keamanan (security notice) yang memperingatkan pengguna untuk tidak membagikan kode kepada siapapun langkah ini bertujuan mencegah serangan social engineering dan phishing.
+
+
+5. Tampilan Halaman Verifikasi Email Reset Password
+Gambar 3.80 Tampilan Halaman Verifikasi Email Reset Password
+
+    Halaman ini berfungsi sebagai langkah awal proses pemulihan kata sandi yang terlupakan. Terdapat satu kolom input untuk memasukkan email terdaftar, diikuti tombol "Kirim Kode OTP" untuk memproses permintaan. Sistem memvalidasi keberadaan email di database sebelum mengirimkan kode OTP mekanisme ini menerapkan Rate Limiting pada permintaan reset untuk mencegah penyalahgu’naan fitur sebagai alat enumerasi email atau spam berlebihan ke server email.
+
+
+6. Tampilan Verifikasi Email OTP Reset Password
+Gambar 3.81 Tampilan Verifikasi OTP Reset Password
+
+    Halaman ini merupakan tahap kedua dari proses pemulihan kata sandi, berfungsi untuk memverifikasi kepemilikan email pengguna. Input berupa 6 digit kode OTP yang dimasukkan ke dalam kolom terpisah, disertai countdown timer masa berlaku kode dan opsi pengiriman ulang. Alamat email ditampilkan secara parsial (di hide) untuk menjaga privasi. Sistem menerapkan validasi waktu kedaluwarsa dan pembatasan percobaan input kode hanya valid selama durasi tertentu dan otomatis hangus setelahnya untuk mencegah penyalahgunaan.
+
+
+7. Tampilan Pesan Email OTP Reset Password
+
+Gambar 3.82  Tampilan Pesan Email OTP Reset Password
+
+    Antarmuka ini merupakan tampilan email yang dikirimkan kepada pengguna yang meminta pemulihan kata sandi. Email berisi kode OTP 6 digit dengan format visual yang jelas, masa berlaku 10 menit, dan personalisasi nama penerima. Pesan dilengkapi peringatan keamanan (security warning) yang menekankan agar kode tidak dibagikan kepada siapapun termasuk pihak yang mengaku dari BTIKP, mekanisme ini berfungsi sebagai pertahanan terhadap serangan social engineering dan upaya phishing.
+
+
+8. Tampilan Halaman Reset Password
+
+Gambar 3.83 Tampilan Halaman Reset Password
+
+    Halaman ini merupakan tahap akhir proses pemulihan kata sandi, berfungsi untuk membuat password baru setelah verifikasi OTP berhasil. Formulir menyediakan dua kolom input Password Baru dengan ketentuan minimal 8 karakter, dan Konfirmasi Password untuk memastikan kecocokan. Sistem menerapkan Input Validation yang memeriksa kekuatan password (panjang minimal, kompleksitas karakter) serta menolak password yang terlalu lemah, validasi ini berjalan secara real-time untuk memandu pengguna membuat kredensial yang aman.
+
+
+9. Tampilan antarmuka akun terkunci
+
+Gambar 3.84 Tampilan antarmuka akun terkunci
+
+    Antarmuka Keamanan Penguncian Akun (Account Lockout) ini berfungsi sebagai mekanisme pertahanan aktif terhadap percobaan akses ilegal (brute-force). Secara visual, sistem menampilkan overlay layar penuh yang memblokir seluruh interaksi pengguna segera setelah terdeteksi lima kali kegagalan autentikasi berturut-turut.
+
+
+10. Tampilan Halaman Dashboard Admin
+Gambar 3.85 Tampilan Halaman Dashboard Admin
+
+    Halaman ini berfungsi sebagai pusat kendali utama bagi administrator setelah berhasil login. Antarmuka menampilkan berbagai widget informasi meliputi statistik konten, distribusi kategori, daftar berita terbaru, dan panel Aksi Cepat untuk navigasi fungsi utama. Pada sisi kanan terdapat panel Keamanan yang menampilkan status Blocked IP, Failed Logins, dan status Firewall. fitur monitoring ini memungkinkan administrator memantau aktivitas mencurigakan dan status keamanan sistem secara real-time.
+11. Tampilan Halaman Dashboard Author
+Gambar 3.86 Tampilan Halaman Dashboard Author 
+
+    Dashboard Author menampilkan metrik personal penulis seperti jumlah artikel, views, dan status persetujuan, dilengkapi fitur "Aksi Cepat" untuk pintasan pembuatan konten. Halaman ini memuat daftar artikel terkini, dengan menu navigasi yang disederhanakan tanpa pengaturan Kategori dan Tag sesuai batasan hak akses penulis.
+
+
+12. Tampilan Halaman Dashboard Editor
+Gambar 3.87 Tampilan Halaman Dashboard Editor 
+
+    Dashboard Editor menyajikan ringkasan performa portal melalui statistik Total Berita, Views, Antrean Review, dan Tim Aktif, serta visualisasi grafik pengunjung dan distribusi kategori. menu di sidebar memberikan akses penuh ke manajemen konten (Berita, Kategori, Tag, Galeri) untuk memfasilitasi tugas editorial dan pengawasan sistem secara menyeluruh.
+
+13. Tampilan Halaman Kelola Berita
+Gambar 3.88 Tampilan Halaman Kelola Berita
+
+    Halaman ini memfasilitasi administrator untuk mengelola seluruh konten berita dalam sistem. Antarmuka menyediakan tabel data dengan kolom informasi (judul, kategori, status, views, waktu, penulis), fitur pencarian, filter berdasarkan status dan kategori, serta tombol aksi untuk setiap entri. Sebelum data ditampilkan atau dimodifikasi, sistem melakukan validasi otorisasi berbasis role—hanya pengguna dengan hak akses administrator yang dapat mengakses halaman ini, sementara percobaan akses tanpa otorisasi akan dicatat dalam Activity Log untuk keperluan audit keamanan.
+
+
+14. Tampilan Modal Tambah Berita
+Gambar 3.89 Tampilan Modal Tambah Kelola Berita
+
+    Antarmuka ini berupa modal pop-up yang berfungsi untuk membuat berita baru dalam sistem. Formulir terbagi dalam beberapa tab navigasi: Konten Utama (judul, ringkasan, editor konten), Media & Visual (thumbnail), SEO & Social (meta tags), dan Pengaturan (status publikasi). Editor konten dilengkapi toolbar formatting standar untuk pemformatan teks. Sistem menerapkan Input Validation secara real-time—setiap kolom input divalidasi terhadap panjang karakter, format yang diizinkan, dan penyaringan karakter berbahaya (XSS payload) sebelum data disimpan ke database.
+
+
+15. Tampilan Modal Edit Berita
+
+Gambar 3.90 Tampilan Modal Edit Kelola Berita
+
+    Antarmuka ini memfasilitasi administrator untuk memodifikasi berita yang sudah ada. Struktur modal identik dengan form tambah, namun kolom-kolom sudah terisi data existing yang dapat diubah. Terdapat indikator "Konten Aman" yang menunjukkan status validasi konten, serta informasi metadata seperti pembuat dan tanggal pembuatan. Sistem mencatat setiap perubahan dalam Activity Log dan menerapkan validasi ulang terhadap seluruh input yang dimodifikasi—mekanisme ini memastikan integritas data tetap terjaga meskipun artikel mengalami beberapa kali revisi.
+
+
+16. Tampilan Modal Lihat Detail Berita
+Gambar 3.91 Tampilan Modal Lihat Detail Berita
+
+    Modal ini berfungsi untuk menampilkan pratinjau lengkap artikel tanpa meninggalkan halaman kelola berita. Antarmuka menampilkan thumbnail, judul, kategori, status publikasi, ringkasan, URL publik, timestamp pembuatan/pembaruan, serta cuplikan konten artikel. Terdapat tombol akses cepat untuk mengedit artikel. Data yang ditampilkan merupakan hasil query dengan validasi otorisasi sistem memverifikasi hak akses pengguna terhadap artikel tersebut sebelum menampilkan informasi sensitif seperti status dan riwayat perubahan.
+
+
+17. Tampilan Modal Statistik
+Gambar 3.92 Tampilan Modal Statistik
+
+    Modal ini menyajikan analisis keterlibatan pembaca terhadap artikel tertentu. Antarmuka menampilkan metrik utama: Total Views, Total Likes, jumlah Komentar, dan deteksi Spam, dilengkapi daftar aktivitas terbaru (like dan diskusi). Data statistik diambil dari logging system yang mencatat setiap interaksi pengguna dengan artikel. Metrik Spam berfungsi sebagai indikator keamanan—sistem secara otomatis menandai dan menghitung komentar yang terdeteksi mengandung konten berbahaya atau promosi tidak sah berdasarkan algoritma spam filtering.
+
+
+18. Tampilan Halaman  Kategori
+Gambar 3.93 Tampilan Halaman  Kategori
+
+    Halaman ini memfasilitasi administrator untuk mengelola kategori berita dalam sistem. Tabel data menampilkan informasi kategori meliputi: nama, slug, deskripsi, jumlah artikel terkait, status aktif/nonaktif, dan urutan tampil. Setiap kategori memiliki ikon visual untuk identifikasi cepat. Sistem menerapkan validasi pada pembuatan slug untuk memastikan format URL-friendly dan keunikan—slug yang duplikat atau mengandung karakter ilegal akan ditolak untuk menjaga konsistensi struktur URL dan mencegah konflik routing.
+
+
+19. Tampilan Modal Tambah Kategori
+Gambar 3.94 Tampilan Modal Tambah Kategori
+
+    Keterangan: Antarmuka ini berupa modal pop-up yang berfungsi untuk membuat kategori berita baru. Formulir menyediakan kolom input: Nama Kategori, Slug (URL-friendly), Deskripsi, pemilihan Warna identitas dari palet yang tersedia, Urutan tampil, pemilihan Ikon visual, serta toggle Status Aktif. Sistem menerapkan validasi pada seluruh input slug dibuat otomatis dari nama jika dikosongkan dengan sanitasi karakter khusus, sementara kombinasi warna dan ikon divalidasi untuk memastikan diferensiasi visual antar kategori.
+
+
+20. Tampilan Modal Edit Kategori
+Gambar 3.95 Tampilan Modal Edit Kategori
+
+    Modal ini memfasilitasi administrator untuk memodifikasi data kategori yang sudah ada. Struktur formulir identik dengan modal tambah, namun kolom-kolom sudah terisi data existing yang dapat diubah. Setiap modifikasi akan mempengaruhi seluruh artikel yang terkait dengan kategori tersebut. Sistem menerapkan validasi konsistensi data—perubahan slug akan otomatis memperbarui URL artikel terkait, dan perubahan status menjadi nonaktif akan memicu peringatan jika masih ada artikel aktif dalam kategori tersebut.
+
+
+21. Tampilan Modal Detail Kategori
+Gambar 3.96 Tampilan Modal Detail Kategori
+
+    Modal ini menampilkan informasi lengkap kategori dalam format read-only. Antarmuka menyajikan: header visual dengan warna dan ikon kategori, status aktif, jumlah artikel terkait, deskripsi, urutan tampil, kode warna (hex), serta timestamp pembuatan dan pembaruan terakhir. Data ditampilkan secara terstruktur untuk memudahkan audit dan verifikasi. Akses ke modal ini dicatat dalam sistem Activity Log sebagai bagian dari mekanisme pelacakan aktivitas administrator terhadap data master.
+
+
+22. Tampilan Halaman Tag
+Gambar 3.97 Tampilan Halaman Tag
+
+    Halaman ini memfasilitasi administrator untuk mengelola tag (label) artikel dalam sistem. Tabel data menampilkan informasi tag meliputi: nama, slug, jumlah artikel terkait, status aktif/nonaktif, dan tanggal pembuatan. Fitur filter berdasarkan status dan pencarian tersedia untuk navigasi data. Sistem menerapkan validasi keunikan pada pembuatan tag nama dan slug yang duplikat akan ditolak untuk mencegah redundansi data dan memastikan konsistensi sistem pelabelan artikel.
+
+
+23. Tampilan Modal Tambah Tag
+Gambar 3.98 Tampilan Modal Tambah Tag
+
+    Antarmuka ini berupa modal pop-up kompak untuk membuat tag baru. Formulir menyediakan tiga elemen input: Nama Tag (wajib), Slug (otomatis dibuatkan dari nama jika dikosongkan), dan toggle Status Tag. Desain yang minimalis memungkinkan pembuatan tag secara cepat. Sistem menerapkan Input Validation terhadap nama tag—karakter khusus dan panjang berlebihan ditolak, sementara slug disanitasi untuk memastikan format URL-friendly yang kompatibel dengan struktur routing sistem.
+
+
+24. Tampilan Modal Edit Tag
+Gambar 3.99 Tampilan Modal Edit Tag
+
+    Modal ini memfasilitasi administrator untuk memodifikasi data tag yang sudah ada. Struktur formulir identik dengan modal tambah tag, terdiri dari kolom Nama Tag, Slug, dan toggle Status Tag yang sudah terisi nilai existing. Perubahan nama tag akan mempengaruhi label pada seluruh artikel terkait. Sistem menerapkan validasi konsistensi—perubahan slug akan otomatis memperbarui struktur URL halaman tag, dan modifikasi terhadap tag yang banyak digunakan akan dicatat dalam Activity Log untuk keperluan audit.
+
+
+25. Tampilan Modal Lihat Detail Tag
+Gambar 3.100 Tampilan Modal Lihat Detail Tag
+
+    Modal ini menampilkan informasi lengkap tag dalam format read-only. Antarmuka menyajikan: nama tag dengan ikon hashtag, slug URL, badge jumlah artikel terkait, status aktif, serta timestamp pembuatan dan pembaruan terakhir. Tersedia tombol akses langsung ke modal edit untuk modifikasi cepat. Data yang ditampilkan merupakan hasil query dengan validasi otorisasi sistem memverifikasi hak akses administrator sebelum menampilkan informasi metadata dan statistik penggunaan tag.
+
+
+26. Tampilan Halaman Galeri Kegiatan
+Gambar 3.101 Tampilan Halaman Galeri Kegiatan 
+
+    Halaman ini memfasilitasi administrator untuk mengelola dokumentasi visual kegiatan instansi. Antarmuka menampilkan galeri dalam format grid card dengan preview gambar, judul, kategori album, tanggal kegiatan, status publikasi, dan badge Featured. Tersedia filter berdasarkan tipe media, album, status, dan featured. Sistem memvalidasi setiap file yang diunggah—ekstensi, ukuran, dan tipe MIME diverifikasi untuk memastikan hanya file gambar/video valid yang diproses, mencegah unggahan file berbahaya (shell upload).
+
+
+27. Tampilan Modal Tambah Galeri
+Gambar 3.102 Tampilan Modal Tambah Galeri
+
+    Antarmuka ini berupa modal pop-up untuk menambah dokumentasi galeri kegiatan baru. Formulir terbagi dalam tiga tab: Informasi Dasar (judul, deskripsi, album, lokasi, tanggal kegiatan), Media & Visual (upload foto/video hingga 20 gambar), dan Pengaturan (status publikasi). Sistem menerapkan validasi file upload secara ketat—setiap file divalidasi ekstensi, ukuran maksimal, dan MIME type untuk memastikan hanya format gambar (JPG/PNG/WebP) atau video yang diterima, mencegah eksploitasi file upload vulnerability.
+
+
+28. Tampilan Modal Edit Galeri
+Gambar 3.103 Tampilan Modal Edit Galeri
+
+    Modal ini memfasilitasi administrator untuk memodifikasi data galeri yang sudah ada. Struktur formulir identik dengan modal tambah, namun kolom-kolom sudah terisi data existing termasuk preview media yang telah diunggah. Administrator dapat mengubah informasi dasar, menambah/menghapus media, serta memperbarui pengaturan publikasi. Sistem mencatat setiap perubahan dalam Activity Log dan menerapkan validasi ulang terhadap file baru yang diunggah metadata EXIF juga diproses untuk memastikan tidak ada informasi sensitif yang tersimpan dalam gambar publikasi.
+
+
+29. Tampilan Modal Detail Gambar
+Gambar 3.104 Tampilan Modal Detail Gambar
+
+    Modal ini menampilkan pratinjau lengkap item galeri dalam format read-only. Antarmuka menyajikan informasi: judul kegiatan, deskripsi, album terkait, lokasi, dan tanggal pelaksanaan pada tab Informasi Dasar. Tab Media & Visual menampilkan preview gambar/video yang diunggah, sementara tab Pengaturan menunjukkan status publikasi. Tersedia tombol akses langsung ke modal edit. Data galeri diambil dengan validasi otorisasi sistem memverifikasi hak akses sebelum menampilkan konten, terutama untuk galeri dengan status draft atau unpublished.
+
+
+30. Tampilan Halaman Log Aktifitas
+Gambar 3.105 Tampilan Halaman Log Aktifitas
+
+    Halaman ini berfungsi sebagai pusat monitoring seluruh aktivitas pengguna dalam sistem. Tabel data menampilkan informasi: user pelaku, timestamp, jenis aksi (dengan color-coded badge), deskripsi aktivitas, level kepentingan, IP address, dan subjek terkait. Tersedia filter berdasarkan rentang tanggal, user, jenis aksi, dan level. Fitur "Auto Delete" memungkinkan pembersihan log lama secara otomatis. Sistem ini merupakan implementasi Security Auditing setiap aktivitas tercatat untuk keperluan forensik dan deteksi perilaku mencurigakan.
+
+
+31. Tampilan Modal Detail Log Aktifitas
+Gambar 3.106 Tampilan Modal Detail Log Aktifitas
+
+    Modal ini menampilkan informasi forensik lengkap dari satu entri log aktivitas. Antarmuka menyajikan: jenis event dengan badge level, deskripsi human-readable, informasi pelaku (user, IP address), subjek terkait, dan timestamp presisi. Bagian "Detail Teknis" menampilkan data lanjutan: URL yang diakses, User-Agent browser/device, dan Log ID unik. Informasi User-Agent direkam untuk mengidentifikasi perangkat yang digunakan data ini krusial dalam analisis insiden keamanan untuk melacak sumber dan metode akses.
+
+
+32. Tampilan Halaman Blokir Ips
+Gambar 3.107 Tampilan Halaman Blokir Ips
+
+    Halaman ini memfasilitasi administrator untuk mengelola daftar IP yang diblokir dari mengakses sistem. Tabel menampilkan informasi: IP address dengan User-Agent, route yang diblokir, jumlah percobaan akses, status blokir (Terblokir/Tidak Terblokir/Expired), waktu kedaluwarsa, dan alasan pemblokiran. Tersedia filter berdasarkan status dan urutan. Fitur "Bersihkan Expired" menghapus entri yang sudah kedaluwarsa. Sistem ini merupakan implementasi IP Blacklisting bagian dari mekanisme Rate Limiting dan pertahanan terhadap serangan Brute Force, SQL Injection, dan Crawling berlebihan.
+
+
+33. Tampilan Modal Tambah Blokir Ips
+Gambar 3.108 Tampilan Modal Tambah Blokir Ips
+
+    Modal ini memfasilitasi administrator untuk menambahkan IP baru ke daftar blokir secara manual. Formulir menyediakan kolom: IP Address, Alasan Blokir (wajib), serta pilihan Durasi Blokir (Sementara dengan pengaturan waktu atau Permanen). Mode sementara dilengkapi input durasi dalam satuan waktu yang dapat dipilih, dengan informasi bahwa IP akan otomatis di-unblock setelah durasi berakhir. Sistem memvalidasi format IP address dan mencegah duplikasi entri mekanisme ini memungkinkan respons cepat terhadap ancaman keamanan yang teridentifikasi dari Activity Log.
+
+
+34. Tampilan Modal Edit Blokir Ips
+Gambar 3.109 Tampilan Modal Edit Blokir Ips
+
+    Modal ini memfasilitasi administrator untuk memperbarui informasi IP yang telah diblokir. Formulir menampilkan IP Address dalam format read-only (tidak dapat diubah), kolom Alasan Blokir yang dapat dimodifikasi, serta pilihan Durasi Blokir (Sementara/Permanen). Terdapat peringatan visual yang menginformasikan bahwa mode Permanen memerlukan unblock secara manual. Sistem mencatat setiap perubahan konfigurasi blokir dalam Activity Log modifikasi durasi dari sementara ke permanen khususnya ditandai sebagai aktivitas keamanan kritis untuk keperluan audit.
+
+
+35. Tampilan Modal Detail Blokir Ips
+Gambar 3.110 Tampilan Modal Detail Blokir Ips
+
+    Modal ini menampilkan informasi forensik lengkap dari satu entri IP yang diblokir. Antarmuka menyajikan: status blokir dengan badge visual dan waktu kedaluwarsa, IP Address, jumlah percobaan akses, route yang diblokir, durasi blokir, alasan pemblokiran, User-Agent perangkat, serta timestamp pembuatan dan pembaruan. Tombol "Unblock" memungkinkan pencabutan blokir secara langsung. Data User-Agent dan route direkam untuk analisis pola serangan—informasi ini membantu mengidentifikasi apakah blokir dipicu oleh brute force, vulnerability scanning, atau aktivitas mencurigakan lainnya.
+
+
+36. Tampilan Halaman Laporan
+Gambar 3.111 Tampilan Halaman Laporan
+
+    Halaman ini berfungsi sebagai pusat pembuatan laporan sistem dalam format PDF. Antarmuka menyediakan enam modul laporan: Laporan Artikel, Laporan Kategori, Laporan Pengguna, Laporan Activity Log, Laporan IP Terblokir, dan Laporan Gallery. Setiap modul dilengkapi filter rentang tanggal dan parameter spesifik (status, role, action, tipe media). Sistem menerapkan validasi rentang tanggal dan otorisasi akses—hanya administrator dengan hak tertentu yang dapat mengekspor data sensitif seperti Activity Log dan IP Terblokir untuk mencegah kebocoran informasi keamanan.
+
+
+37. Tampilan Halaman Pengaturan
+Gambar 3.112 Tampilan Halaman Pengaturan
+
+    Halaman ini memfasilitasi administrator untuk mengkonfigurasi parameter sistem secara menyeluruh. Antarmuka terbagi dalam beberapa tab: Umum (nama portal, tagline, deskripsi, logo, favicon), Kontak, SEO, Tampilan, Kop Surat, Mandatum, Keamanan, dan Email. Tab Umum menampilkan pengaturan identitas dasar website yang akan tampil di seluruh halaman publik. Sistem menerapkan validasi pada upload logo dan favicon ekstensi, ukuran file, dan dimensi gambar diverifikasi untuk memastikan kualitas tampilan optimal dan mencegah file berbahaya tersimpan sebagai aset sistem.
+
+
+38. Tampilan Halaman Management User
+Gambar 3.113 Tampilan Halaman Management User
+
+    Halaman ini memfasilitasi administrator untuk mengelola seluruh akun pengguna dalam sistem. Tabel menampilkan informasi: nama user dengan avatar, email, role (Member/Super Admin), jumlah artikel yang ditulis, status akun (Aktif/Nonaktif), dan timestamp login terakhir beserta IP address. Tersedia filter berdasarkan role, status akun, dan urutan data. Sistem menerapkan Role-Based Access Control (RBAC) akses ke halaman ini dibatasi hanya untuk Super Admin, dan setiap perubahan data pengguna dicatat dalam Activity Log sebagai bagian dari mekanisme audit keamanan.
+
+
+39. Tampilan Modal Tambah User
+Gambar 3.114 Tampilan Modal Tambah User
+
+    Modal ini memfasilitasi administrator untuk membuat akun pengguna baru dalam sistem. Formulir menyediakan kolom: Foto Profil (upload), Nama Lengkap, Email, Password dengan konfirmasi, Role (dropdown), Jabatan, Telepon, Lokasi, dan Bio. Password wajib diisi minimal 8 karakter untuk akun baru. Sistem menerapkan validasi ketat pada pembuatan akun email diverifikasi keunikannya, password dievaluasi kekuatannya, dan foto profil divalidasi ekstensi serta ukurannya untuk mencegah upload file berbahaya.
+
+
+40. Tampilan Modal Edit User
+Gambar 3.115 Tampilan Modal Edit User
+
+    Modal ini memfasilitasi administrator untuk memodifikasi data pengguna yang sudah ada. Struktur formulir identik dengan modal tambah, namun kolom-kolom sudah terisi data existing. Kolom password bersifat opsional jika dikosongkan, password lama tetap dipertahankan. Perubahan role memerlukan validasi tambahan untuk mencegah eskalasi hak akses tidak sah. Sistem mencatat setiap modifikasi data pengguna dalam Activity Log, terutama perubahan role dan status akun sebagai aktivitas keamanan yang memerlukan perhatian khusus.
+
+
+41. Tampilan Modal Lihat Detail User
+Gambar 3.116 Tampilan Modal Lihat Detail User
+
+    Modal ini menampilkan informasi lengkap pengguna dalam format read-only. Antarmuka menyajikan: foto profil dengan nama dan email, badge role dan status akun, jumlah artikel ditulis, serta informasi profil (jabatan, lokasi, telepon). Bagian keamanan menampilkan statistik login gagal, timestamp login terakhir dengan IP address, serta riwayat pembuatan dan pembaruan akun. Data login gagal berfungsi sebagai indikator keamanan jika angka tinggi, administrator dapat mendeteksi potensi serangan brute force terhadap akun tersebut.
+
+
+42. Tampilan Halaman Tong Sampah
+Gambar 3.117 Tampilan Halaman Tong Sampah
+
+    Halaman ini berfungsi sebagai pusat pengelolaan data yang telah dihapus (soft delete) dari berbagai modul sistem. Antarmuka menampilkan tab filter berdasarkan tipe konten: Semua, Artikel, Kategori, Tag, Galeri, User, dan Activity Log, masing-masing dengan badge jumlah item. Tabel data menampilkan informasi: tipe, nama item, detail, dan waktu penghapusan. Fitur "Kosongkan" memungkinkan penghapusan permanen. Sistem soft delete ini merupakan implementasi keamanan data item dapat dipulihkan sebelum dihapus permanen, mencegah kehilangan data akibat kesalahan atau aksi tidak sengaja.
+
+
+43. Tampilan Halaman Profile
+Gambar 3.118 Tampilan Halaman Profile
+
+    Halaman ini memfasilitasi pengguna untuk mengelola informasi profil pribadi. Antarmuka terbagi dalam beberapa bagian: foto profil dengan statistik (artikel, views, login, tanggal bergabung), formulir Informasi Profil (nama, email, telepon, jabatan, lokasi, bio), panel Keamanan Akun (login terakhir, status, tombol ubah password dan keluar dari semua perangkat), serta Aktivitas Terbaru. Fitur "Keluar dari Semua Perangkat" merupakan mekanisme keamanan menginvalidasi semua sesi aktif dan cookie "Ingat Saya", berguna jika pengguna mencurigai akunnya diakses tanpa izin.
+44. Tampilan Modal Notifikasi
+Gambar 3.119 Tampilan Modal Notifikasi
+
+    Modal ini menampilkan daftar notifikasi sistem untuk administrator. Antarmuka menyajikan notifikasi dalam format list dengan ikon berwarna, judul event, pelaku, dan timestamp relatif. Terdapat dua jenis notifikasi: aktivitas konten (berita dipublish) dan peringatan keamanan (IP terblokir). Tombol "Lihat Semua Notifikasi" mengarahkan ke halaman lengkap. Notifikasi keamanan seperti pemblokiran IP ditandai dengan ikon peringatan khusus mekanisme ini memastikan administrator segera mengetahui aktivitas mencurigakan yang terdeteksi oleh sistem Rate Limiting dan dapat mengambil tindakan preventif.
+
+
+45. Tampilan Halaman Beranda Publik
+
+Gambar 3.120 Tampilan Halaman Beranda Publik
+
+    Halaman ini merupakan landing page utama portal yang dapat diakses oleh publik tanpa autentikasi. Antarmuka menampilkan: hero section dengan berita utama dan sidebar berita terbaru, section "Jelajahi Berita" dengan filter kategori, daftar berita dengan badge verifikasi, sidebar "Paling Disukai" dan "Tag Populer", serta footer dengan informasi kontak dan navigasi. Setiap kunjungan dicatat dalam sistem view tracking untuk keperluan statistik—data ini tidak menyimpan informasi personal pengunjung, hanya menghitung jumlah akses untuk analisis popularitas konten.
+46. Tampilan Halaman Semua Berita Publik
+
+Gambar 3.121 Tampilan Halaman Semua Berita Publik
+
+    Halaman ini berfungsi sebagai direktori lengkap seluruh artikel yang dipublikasikan. Antarmuka menyediakan fitur pencarian dengan kolom input dan tombol "Temukan", sidebar filter berdasarkan kategori dengan badge jumlah artikel, serta tampilan artikel dalam format masonry grid. Berita utama ditampilkan lebih besar di posisi atas. Sistem pencarian menerapkan input sanitization—query pencarian dibersihkan dari karakter berbahaya dan script injection sebelum diproses ke database untuk mencegah serangan SQL Injection dan XSS.
+47. Tampilan Halaman Detail Berita Publik
+
+Gambar 3.122 Tampilan Halaman Detail Berita Publik
+
+    Halaman ini menampilkan konten lengkap artikel yang dipilih. Antarmuka terdiri dari: header dengan gambar featured dan metadata (kategori, tanggal, judul, penulis), konten artikel, daftar tag terkait, tombol interaksi (like, komentar, bagikan), serta sidebar dengan artikel serupa dan daftar tag populer. Bagian komentar menampilkan diskusi dengan fitur nested reply. Sistem komentar menerapkan Input Validation ketat—setiap komentar disaring dari karakter ilegal, script berbahaya (XSS payload), dan spam sebelum disimpan dan ditampilkan ke publik.
+48. Tampilan Halaman Galeri Publik
+
+Gambar 3.123 Tampilan Halaman Galeri Publik
+
+    Halaman ini menampilkan dokumentasi visual kegiatan instansi kepada publik. Antarmuka menyediakan filter berdasarkan tipe media (Semua, Foto, Video) dan Album, serta tampilan galeri dalam format grid card dengan efek hover overlay berisi judul kegiatan. Footer menampilkan informasi portal, menu navigasi, topik populer, dan kontak. Setiap item galeri ditampilkan dengan lazy loading untuk optimasi performa gambar dimuat secara bertahap sesuai viewport pengguna, mengurangi beban bandwith dan mempercepat waktu loading halaman.
+49. Tampilan Halaman Pusat Akun
+
+Gambar 3.124 Tampilan Halaman Pusat Akun
+
+    Halaman ini merupakan area member yang dapat diakses oleh pengguna terdaftar (non-admin) untuk mengelola akun pribadi. Antarmuka terbagi dalam tiga tab: Pengaturan Akun (informasi dasar seperti nama dan email yang di-mask untuk privasi), Aktivitas Saya (riwayat like dan komentar), dan Keamanan & Sesi. Bagian Keamanan menyediakan formulir ubah password dengan panduan kekuatan password. Sistem menerapkan validasi password yang ketat—password baru harus memenuhi kriteria panjang minimal dan kombinasi karakter (huruf besar, kecil, angka, simbol) sebelum dapat disimpan.
+3.5.2 Tampilan Antarmuka Keluaran Sistem (output)
+    Bagian ini menampilkan halaman yang menyajikan informasi dan data hasil pemrosesan sistem kepada pengguna.
+
+
+1. Tampilan Laporan Berita
+
+Gambar 3.125 Tampilan Laporan Berita
+
+    Dokumen ini merupakan output laporan data berita dalam format PDF yang dihasilkan sistem. Laporan memuat kop surat resmi instansi, metadata dokumen (nomor, periode, petugas penarik data), serta tabel yang berisi: nomor urut, judul artikel, kategori, penulis, status publikasi, dan tanggal publish. Dokumen dilengkapi tanda tangan elektronik dan stempel instansi. Sistem memvalidasi otorisasi pengguna sebelum mengizinkan ekspor data—hanya administrator dengan hak akses tertentu yang dapat mengunduh laporan untuk mencegah kebocoran informasi konten.
+
+
+2. Tampilan Laporan Kategori
+
+Gambar 3.126 Tampilan Laporan Kategori
+
+    Dokumen ini merupakan output laporan data kategori dalam format PDF. Laporan memuat kop surat resmi, periode data, serta tabel yang berisi: nomor urut, nama kategori, slug URL, jumlah artikel terkait, status aktif/nonaktif, dan tanggal pembuatan. Dokumen dilengkapi tanda tangan dan stempel resmi. Laporan ini berguna untuk keperluan audit strukturisasi konten. Sistem mencatat setiap aktivitas pengunduhan laporan dalam Activity Log—mekanisme ini memastikan akuntabilitas dan dapat dilacak siapa yang mengakses data master kategori.
+3. Tampilan Laporan Pengguna
+
+Gambar 3.127 Tampilan Laporan Pengguna
+
+    Dokumen ini merupakan output laporan data pengguna dalam format PDF. Laporan memuat kop surat resmi, periode data, serta tabel yang berisi: nomor urut, nama pengguna, email, role (Member/Super Admin), status akun, dan timestamp login terakhir. Dokumen dilengkapi tanda tangan dan stempel resmi. Laporan ini merupakan data sensitif yang memerlukan perlindungan khusus. Sistem menerapkan pembatasan akses ketat—hanya Super Admin yang dapat mengekspor laporan pengguna, dan setiap pengunduhan dicatat untuk keperluan audit keamanan.
+4. Tampilan Laporan Log Aktifitas
+
+Gambar 3.128 Tampilan Laporan Log Aktifitas
+
+    Dokumen ini merupakan output laporan histori aktivitas dalam format PDF untuk keperluan audit keamanan. Laporan memuat kop surat resmi, periode data, serta tabel yang berisi: nomor urut, tanggal/waktu, user pelaku, jenis action (dengan color-coded badge), deskripsi aktivitas, dan IP address. Dokumen dilengkapi tanda tangan dan stempel resmi. Laporan ini merupakan bukti forensik digital yang krusial—mencatat seluruh aktivitas termasuk login gagal, perubahan pengaturan, dan penghapusan data untuk keperluan investigasi insiden keamanan.
+5. Tampilan Laporan Ip Terblokir
+
+Gambar 3.129 Tampilan Laporan Ip Terblokir
+
+    Dokumen ini merupakan output laporan data IP terblokir dalam format PDF untuk keperluan audit keamanan. Laporan memuat kop surat resmi, periode data, serta tabel yang berisi: nomor urut, IP address, alasan pemblokiran, durasi blokir (Permanen/tanggal kedaluwarsa), status (Clean/Expired/Terblokir dengan color-coded badge), dan User-Agent perangkat. Dokumen dilengkapi tanda tangan dan stempel resmi. Laporan ini merupakan bukti forensik yang mendokumentasikan respons sistem terhadap ancaman keamanan mencatat IP yang terdeteksi melakukan brute force, SQL Injection, atau aktivitas mencurigakan lainnya.
+6. Tampilan Laporan Galeri
+
+Gambar 3.130 Tampilan Laporan Galeri
+
+    Dokumen ini merupakan output laporan data galeri kegiatan dalam format PDF. Laporan memuat kop surat resmi, periode data, serta tabel yang berisi: nomor urut, judul kegiatan, album/kategori, tipe media (Gambar/Video), uploader yang mengunggah, dan tanggal upload. Dokumen dilengkapi tanda tangan dan stempel resmi. Laporan ini berguna untuk keperluan dokumentasi dan audit konten multimedia instansi. Sistem memvalidasi otorisasi sebelum ekspor—hanya administrator dengan hak akses yang dapat mengunduh data ini untuk memastikan akuntabilitas pengelolaan aset digital.
+
+    BAB IV 
+PENUTUP
+BAB IV 
+4.1 Kesimpulan 
+    Berdasarkan hasil perancangan, implementasi, dan pengujian sistem yang telah dilakukan pada BTIKP Provinsi Kalimantan Selatan, dapat ditarik beberapa kesimpulan sebagai jawaban atas rumusan masalah, yaitu:
+1. Telah berhasil dibangun sebuah Portal Web Informasi Publik yang terintegrasi untuk BTIKP Provinsi Kalimantan Selatan. Sistem ini mampu menjadi media penyebaran informasi yang dinamis, memfasilitasi pengelolaan berita, profil, dan galeri kegiatan instansi secara terpusat melalui dashboard administrator.
+2. Implementasi algoritma Rate Limiting pada halaman login administrator terbukti berfungsi dengan baik. Fitur ini mampu mendeteksi dan memblokir alamat IP yang melakukan percobaan login gagal secara berulang-ulang, sehingga sistem memiliki pertahanan otomatis terhadap ancaman serangan Brute Force.
+3. Penerapan mekanisme keamanan Input Validation dan Activity Logging telah berjalan sesuai perancangan. Fitur Input Validation secara efektif menolak karakter berbahaya pada formulir masukan untuk mencegah serangan injeksi (seperti iklan judi online), sedangkan Activity Logging berhasil merekam seluruh jejak aktivitas pengguna (audit trail) yang berguna untuk pengawasan dan penelusuran insiden keamanan.
+
+4.2 Saran 
+    Demi pengembangan sistem yang lebih baik di masa mendatang serta optimalisasi implementasi di lingkungan kerja nyata, penulis memberikan beberapa saran sebagai berikut:
+1. Pengembangan Infrastruktur: Disarankan agar sistem ini dioperasikan menggunakan protokol keamanan HTTPS (SSL/TLS) pada server produksi (hosting). Hal ini penting untuk mengenkripsi lalu lintas data antara browser pengguna dan server, sehingga kredensial login dan kode OTP tidak dapat disadap.
+2. Penambahan Fitur Keamanan: Dapat dipertimbangkan untuk menambahkan fitur CAPTCHA (seperti Google reCAPTCHA) pada formulir login dan input publik untuk menambah lapisan keamanan terhadap serangan bot otomatis yang semakin canggih.
+3. Kebijakan Backup Berkala: Pihak pengelola IT BTIKP disarankan untuk menerapkan prosedur pencadangan (backup) basis data secara otomatis dan berkala (harian/mingguan) guna mengantisipasi risiko kehilangan data akibat kegagalan perangkat keras atau serangan siber yang tidak terduga.
+
+
+
+
+
+DAFTAR PUSTAKA
+Abdullayev, V., & Chauhan, A. S. (2023). SQL Injection Attack: Quick View. Mesopotamian Journal of Cybersecurity, 2023, 30-34.
+Ali, A., Ahmed, M., & Khan, A. (2021). Audit Logs Management and Security - A Survey. Kuwait Journal of Science, 48(3), 1-18.
+Demilie, W. B., & Deriba, F. G. (2022). Detection and prevention of SQLI attacks and developing compressive framework using machine learning and hybrid techniques. Journal of Big Data, 9(124).
+Hamza, A. A., & Al-Janabi, R. J. S. (2024). Detecting Brute Force Attacks Using Machine Learning. BIO Web of Conferences, 97, 00045.
+Jelita, L. D. A., Al Azam, M. N., & Nugroho, A. (2024). Evaluasi Keamanan Teknologi Informasi Menggunakan Indeks Keamanan Informasi 5.0 dan ISO/EIC 27001:2022. Jurnal SAINTEKOM (Sains, Teknologi, Komputer, dan Manajemen), 14(1), 84-94.
+Singh, S. K., Gautam, S., Cartier, C., Patil, S., & Ricci, R. (2024). Where The Wild Things Are: Brute-Force SSH Attacks In The Wild And How To Stop Them. Proceedings of the 21st USENIX Symposium on Networked Systems Design and Implementation (NSDI '24), Santa Clara, CA, USA.
+
+
+LAMPIRAN-LAMPIRAN
+1. Surat Pengantar Permohonan PKL dari Fakultas
+
+
+2. Surat Balasan Dari BTIKP Provinsi Kalimantan Selatan
+
+
+3. Daftar Hadir Praktik Kerja Lapangan
+
+
+
+4. Lembar Penilaian PKL
+
+
+
+5. Scan Kartu Bimbingan PKL
+
+
+6. Sertifikat
+
+
+
+
+
+
+
+13
+
+
+
+3
+
+
+
+2
+
+
+14
+
+
+
+
+
+
+2
+
+
+4
+
+
+
+
+
+
+2
+
+
+6
+
+
+
+10
+
+
+
+2
+
+
+
+
